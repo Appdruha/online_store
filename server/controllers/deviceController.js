@@ -1,6 +1,7 @@
 const uuid = require('uuid')
 const path = require('path')
-const {Device, DeviceInfo} = require('../models/models')
+const sequelize = require('sequelize')
+const {Device, DeviceInfo, Rating} = require('../models/models')
 const ApiError = require('../errors/ApiError')
 
 class DeviceController {
@@ -15,9 +16,8 @@ class DeviceController {
 
             if (info) {
                 info = JSON.parse(info)
-                console.log(info)
                 await DeviceInfo.create({
-                    id: device.id,
+                    deviceId: device.id,
                     title: info.title,
                     description: info.description
                 })
@@ -36,7 +36,6 @@ class DeviceController {
         limit = limit || 9
         let offset = page * limit - limit
         let devices
-        let info
         if (!brandId && !typeId) {
             devices = await Device.findAndCountAll({limit, offset})
         }
@@ -57,10 +56,36 @@ class DeviceController {
         const device = await Device.findOne(
             {
                 where: {id},
-                include: [{model: DeviceInfo, as: 'info'}]
+                include: [
+                    {
+                        model: DeviceInfo,
+                        attributes: ["title", "description"],
+                        as: "info"
+                    }
+                ]
             }
         )
         return res.json(device)
+    }
+
+    static async updateDeviceRating(deviceId) {
+        const avgRatingData = await Rating.findAll(
+            {
+                where: {deviceId},
+                attributes: [[sequelize.fn('AVG', sequelize.col('rate')), 'avgRate']]
+            }
+        )
+        const avgRating = Math.floor(JSON.parse(JSON.stringify(avgRatingData))[0].avgRate * 10) / 10
+
+        await Device.update({rating: avgRating}, {where: {id: deviceId}})
+    }
+
+    async setRating(req, res) {
+        const {id} = req.params
+        const {userId, rate} = req.body
+        const rating = await Rating.create({rate, userId, deviceId: id})
+        await DeviceController.updateDeviceRating(id)
+        return res.json(rating)
     }
 }
 
