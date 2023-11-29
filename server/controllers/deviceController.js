@@ -99,6 +99,19 @@ class DeviceController {
         const basketDevice = await BasketDevice.create({deviceId: id, basketId: userId})
         return res.json(basketDevice)
     }
+
+    async removeDevice(req, res) {
+        const {id} = req.params
+        const removedDevice = await Device.destroy({where: {id}})
+        return res.json(removedDevice)
+    }
+
+    async removeDeviceFromBasket(req, res) {
+        const {id} = req.params
+        const {userId} = req.query
+        const removedDevice = await BasketDevice.destroy({where: {basketId: userId, deviceId: id}})
+        return res.json(removedDevice)
+    }
 }
 
 module.exports = new DeviceController()

@@ -6,3 +6,5 @@ const authMiddleware = require('../middlewares/checkRoleAndAuthMiddleware')
 router.get('/', authMiddleware(), basketController.getBasket)
 
 module.exports = router
+
+

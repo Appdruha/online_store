@@ -14,5 +14,7 @@ router.put('/:id/rating',
     authMiddleware(), checkIsAcceptableAction({type: "RATING"}), deviceController.setRating)
 router.get('/', deviceController.getAll)
 router.get('/:id', deviceController.getOne)
+router.delete('/:id', checkRole('ADMIN'), deviceController.removeDevice)
+router.delete('/:id/fromBasket', authMiddleware(), deviceController.removeDeviceFromBasket)
 
 module.exports = router
