@@ -7,7 +7,12 @@ module.exports = function () {
             const {id} = req.params
             const {userId} = req.body
             const rating = await Rating.findOne({where: {userId, deviceId: id}})
-            rating === null ? next() : next(ApiError.forbidden("Недопустимое действие"))
+            const isRated = rating === null
+            if (req.method === "POST") {
+                   isRated ? next() : next(ApiError.forbidden("Недопустимое действие"))
+            } else if (req.method === "PUT") {
+                    isRated ? next(ApiError.forbidden("Недопустимое действие")) : next()
+            }
         } catch (e) {
             res.status(401).json({message: "Не авторизован"})
         }

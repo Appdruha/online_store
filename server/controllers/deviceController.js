@@ -83,7 +83,12 @@ class DeviceController {
     async setRating(req, res) {
         const {id} = req.params
         const {userId, rate} = req.body
-        const rating = await Rating.create({rate, userId, deviceId: id})
+        let rating
+        if (req.method === "PUT") {
+            rating = await Rating.update({rate}, {where: {deviceId: id, userId}})
+        } else {
+            rating = await Rating.create({rate, userId, deviceId: id})
+        }
         await DeviceController.updateDeviceRating(id)
         return res.json(rating)
     }
