@@ -1,0 +1,15 @@
+.appBody{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100vw;
+    height: 101vh;
+    background: aquamarine;
+}
+
+.header{
+    display: flex;
+    width: 100%;
+    height: 60px;
+    background: cadetblue;
+}

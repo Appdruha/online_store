@@ -1,0 +1,20 @@
+.deviceBox {
+    margin: 12px;
+    display: flex;
+    flex-direction: column;
+    width: 220px;
+    height: 320px;
+    background: cornflowerblue;
+}
+
+.deviceBox_header {
+
+}
+
+.deviceBox_img {
+
+}
+
+.deviceBox_footer {
+
+}
