@@ -1,24 +1,18 @@
-import {NavLink, Route, Routes} from "react-router-dom";
+import React from "react";
 import styles from "./app.module.css"
-import Devices from "./components/devices/devices";
+import RootRouter from "./components/rootRouter";
+import Navbar from "./components/navbar/navbar";
 
 function App() {
 
     return (
         <div className={styles.appBody}>
             <header className={styles.header}>
-                <nav>
-                    <ol>
-                        <li><NavLink to="/devices">Главная</NavLink></li>
-                        <li>Корзина</li>
-                    </ol>
-                </nav>
                 <button>Выйти</button>
             </header>
-            <main>
-                <Routes>
-                    <Route path="/devices" element={<Devices/>}></Route>
-                </Routes>
+            <main className={styles.main}>
+                <Navbar/>
+                <RootRouter/>
             </main>
         </div>
     );

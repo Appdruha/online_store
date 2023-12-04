@@ -1,9 +1,14 @@
+.container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .deviceBox {
     margin: 12px;
     display: flex;
     flex-direction: column;
     width: 220px;
-    height: 320px;
+    height: 260px;
     background: cornflowerblue;
 }
 

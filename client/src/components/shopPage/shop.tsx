@@ -1,15 +1,19 @@
+import React from "react";
 import {useAppDispatch, useAppSelector} from "../../hooks/redux-hooks";
 import {useEffect} from "react";
-import {fetchDevices} from "../../store/reducers/thunks/devicesThunks";
+import {fetchBrands, fetchDevices, fetchTypes} from "../../store/reducers/thunks/devicesThunks";
 import DeviceBox from "./deviceBox";
+import styles from "./shop.module.css";
 
-function Devices() {
+function Shop() {
     const {rows, isFetching, error}
         = useAppSelector(state => state.devicesReducer)
     const dispatch = useAppDispatch()
 
     useEffect(() => {
         dispatch(fetchDevices())
+        dispatch(fetchBrands())
+        dispatch(fetchTypes())
     }, []);
 
     const deviceBoxes = rows.map(
@@ -18,14 +22,16 @@ function Devices() {
             name={row.name}
             price={row.price}
             rating={row.rating}
-            typeId={row.typeId}
             brandId={row.brandId}
+            typeId={row.typeId}
             img={row.img}
+            brandName={row.brandName}
+            typeName={row.typeName}
         />
     )
 
     return (
-        <div>
+        <div className={styles.container}>
             {error && <h1>{error}</h1>}
             {isFetching && <h1>Loading</h1>}
             {deviceBoxes}
@@ -33,4 +39,4 @@ function Devices() {
     );
 }
 
-export default Devices;
+export default Shop;
