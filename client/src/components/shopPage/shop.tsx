@@ -11,13 +11,14 @@ function Shop() {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        dispatch(fetchDevices())
+        dispatch(fetchDevices({page: "2", limit: "9"}))
         dispatch(fetchBrands())
         dispatch(fetchTypes())
     }, []);
 
     const deviceBoxes = rows.map(
         row => <DeviceBox
+            key={row.id}
             id={row.id}
             name={row.name}
             price={row.price}

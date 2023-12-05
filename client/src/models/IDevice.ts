@@ -8,6 +8,13 @@ export interface IDevice {
     brandName: string;
     typeName: string;
     img: string;
+    key?: number;
+    info?: IDeviceInfo[];
+}
+
+interface IDeviceInfo {
+    title: string;
+    description: string;
 }
 
 export interface IDevices {
