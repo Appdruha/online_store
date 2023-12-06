@@ -3,20 +3,13 @@ import {IDevice, IDevices} from "../../../models/IDevice";
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {IBrand} from "../../../models/IBrand";
 import {IType} from "../../../models/IType";
-
-interface requestData {
-    page: string;
-    limit: string;
-}
+import {IRequestDeviceData} from "../../../models/IRequestData";
 
 export const fetchDevices = createAsyncThunk(
     "shopPage/fetchAllDevices",
-    async (requestData: requestData, thunkAPI) => {
-        const {page, limit} = requestData
+    async (requestData: IRequestDeviceData, thunkAPI) => {
         try {
-            const response =
-                await axios.get<IDevices>(`http://localhost:5000/api/device?page=${page}&limit=${limit}`)
-            return response.data
+
         } catch (e) {
             return thunkAPI.rejectWithValue("Ошибка при загрузке")
         }

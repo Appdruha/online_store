@@ -11,7 +11,7 @@ function Shop() {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        dispatch(fetchDevices({page: "2", limit: "9"}))
+        dispatch(fetchDevices({page: "2", limit: "9", brandId: "1", typeId: "1"}))
         dispatch(fetchBrands())
         dispatch(fetchTypes())
     }, []);
