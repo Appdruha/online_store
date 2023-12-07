@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {IDevice, IDevices} from "../../models/IDevice";
-import {fetchBrands, fetchDevices, fetchOneDevice, fetchTypes} from "./thunks/devicesThunks";
+import {fetchBrands, fetchAllDevices, fetchOneDevice, fetchTypes} from "./thunks/devicesThunks";
 
 interface DevicesState extends IDevices {
     currentDevice: null | IDevice;
@@ -23,16 +23,16 @@ export const devicesSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: {
-        [fetchDevices.fulfilled.type]: (state, action: PayloadAction<IDevices>) => {
+        [fetchAllDevices.fulfilled.type]: (state, action: PayloadAction<IDevices>) => {
             state.isFetching = false
             state.error = ''
             state.rows = action.payload.rows
             state.count = action.payload.count
         },
-        [fetchDevices.pending.type]: (state) => {
+        [fetchAllDevices.pending.type]: (state) => {
             state.isFetching = true
         },
-        [fetchDevices.rejected.type]: (state, action: PayloadAction<string>) => {
+        [fetchAllDevices.rejected.type]: (state, action: PayloadAction<string>) => {
             state.isFetching = false
             state.error = action.payload
         },

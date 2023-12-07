@@ -4,12 +4,13 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 import {IBrand} from "../../../models/IBrand";
 import {IType} from "../../../models/IType";
 import {IRequestDeviceData} from "../../../models/IRequestData";
+import {fetchDevices} from "../../../requestAPI/deviceAPI";
 
-export const fetchDevices = createAsyncThunk(
+export const fetchAllDevices = createAsyncThunk(
     "shopPage/fetchAllDevices",
     async (requestData: IRequestDeviceData, thunkAPI) => {
         try {
-
+            return await fetchDevices(requestData)
         } catch (e) {
             return thunkAPI.rejectWithValue("Ошибка при загрузке")
         }
