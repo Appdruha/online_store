@@ -37,7 +37,7 @@ class Http {
 
     initHttp() {
         const http = axios.create({
-            baseURL: 'http://localhost:5000/api/',
+            baseURL: import.meta.env.VITE_REACT_APP_API_URL + "api/",
             headers,
             withCredentials: false,
         })

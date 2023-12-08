@@ -20,8 +20,7 @@ interface IDeviceInfo {
 export interface IDevices {
     count: number;
     rows: IDevice[];
-    types: string[];
-    brands: string[];
 }
+
 
 

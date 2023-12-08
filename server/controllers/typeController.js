@@ -9,7 +9,7 @@ class TypeController {
     }
 
     async getAll(req, res) {
-        const types = await Type.findAll()
+        const types = await Type.findAll({attributes: {exclude: ['createdAt', 'updatedAt']}})
         return res.json(types)
 
     }

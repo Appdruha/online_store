@@ -1,7 +1,7 @@
 import React from "react";
 import {useAppDispatch, useAppSelector} from "../../hooks/redux-hooks";
 import {useEffect} from "react";
-import {fetchBrands, fetchAllDevices, fetchTypes} from "../../store/reducers/thunks/devicesThunks";
+import {fetchBrandsAndTypes, fetchAllDevices} from "../../store/reducers/thunks/devicesThunks";
 import DeviceBox from "./deviceBox";
 import styles from "./shop.module.css";
 
@@ -11,9 +11,8 @@ function Shop() {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        dispatch(fetchAllDevices({page: "1", limit: "9", brandId: "2", typeId: "1"}))
-        dispatch(fetchBrands())
-        dispatch(fetchTypes())
+        dispatch(fetchAllDevices({page: "2", limit: "9"}))
+        dispatch(fetchBrandsAndTypes())
     }, []);
 
     const deviceBoxes = rows.map(

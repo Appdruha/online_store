@@ -1,8 +1,11 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {IDevice, IDevices} from "../../models/IDevice";
-import {fetchBrands, fetchAllDevices, fetchOneDevice, fetchTypes} from "./thunks/devicesThunks";
+import {fetchBrandsAndTypes, fetchAllDevices, fetchOneDevice} from "./thunks/devicesThunks";
+import {IBrand, IType, ITypesAndBrands} from "../../models/ITypesAndBrands";
 
-interface DevicesState extends IDevices {
+interface DevicesState extends IDevices{
+    types: IType[];
+    brands: IBrand[];
     currentDevice: null | IDevice;
     isFetching: boolean;
     error: string;
@@ -50,28 +53,20 @@ export const devicesSlice = createSlice({
             state.error = action.payload
         },
 
-        [fetchBrands.fulfilled.type]: (state, action: PayloadAction<string[]>) => {
+        [fetchBrandsAndTypes.fulfilled.type]:
+            (state, action: PayloadAction<ITypesAndBrands>) => {
             state.isFetching = false
-            state.brands = action.payload
-            state.rows.map(row => row.brandName = state.brands[row.brandId - 1])
+            state.brands = action.payload.brands
+            state.types = action.payload.types
+            state.rows.map(row => {
+                row.brandName = state.brands[row.brandId - 1].name
+                row.typeName = state.brands[row.typeId - 1].name
+            })
         },
-        [fetchBrands.pending.type]: (state) => {
+        [fetchBrandsAndTypes.pending.type]: (state) => {
             state.isFetching = true
         },
-        [fetchBrands.rejected.type]: (state, action: PayloadAction<string>) => {
-            state.isFetching = false
-            console.log(action.payload)
-        },
-
-        [fetchTypes.fulfilled.type]: (state, action: PayloadAction<string[]>) => {
-            state.isFetching = false
-            state.types = action.payload
-            state.rows.map(row => row.brandName = state.types[row.typeId - 1])
-        },
-        [fetchTypes.pending.type]: (state) => {
-            state.isFetching = true
-        },
-        [fetchTypes.rejected.type]: (state, action: PayloadAction<string>) => {
+        [fetchBrandsAndTypes.rejected.type]: (state, action: PayloadAction<string>) => {
             state.isFetching = false
             console.log(action.payload)
         },

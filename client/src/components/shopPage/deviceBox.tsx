@@ -19,7 +19,8 @@ const DeviceBox = (props: IDevice) => {
                 <div>{props.typeName}</div>
             </div>
             <div className={styles.deviceBox_img}>
-                <img src={import.meta.env.REACT_APP_API_URL} alt="#"/>
+                <img style={{display: "block", width: "150px", height: "150px"}}
+                     src={import.meta.env.VITE_REACT_APP_API_URL + props.img} alt="#"/>
             </div>
             <div className={styles.deviceBox_footer}>
                 <div>{props.rating}</div>
