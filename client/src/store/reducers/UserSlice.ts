@@ -1,19 +1,47 @@
 import {IUser} from "../../models/IUser";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {login} from "./thunks/userThunks";
+import {IAuthResponse} from "../../models/IAuth";
 
-const initialState: IUser = {
+interface IUserState extends IUser {
+    isFetching: boolean;
+    error: string;
+}
+
+const initialState: IUserState = {
     id: undefined,
     role: undefined,
-    isAuth: false
+    isAuth: false,
+    isFetching: false,
+    error: ""
 }
 
 export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        AC(state, action: PayloadAction<boolean>){
-            state.isAuth = action.payload
+        checkAuth (state) {
+            if (localStorage.getItem("token")) {
+                state.isAuth = true
+            }
         }
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(login.fulfilled,
+                (state, action: PayloadAction<IAuthResponse>) => {
+                    state.isFetching = false
+                    localStorage.setItem("token", action.payload.token)
+                    state.isAuth = true
+                })
+            .addCase(login.pending, (state) => {
+                state.isFetching = true
+            })
+            .addCase(login.rejected.type,
+                (state, action: PayloadAction<string>) => {
+                state.isFetching = false
+                state.error = action.payload
+            })
     }
 })
 

@@ -61,6 +61,14 @@ class Http {
         return this.http.get<T, R>(url, config)
     }
 
+    post<T, D, R = AxiosResponse<T>>(
+        url: string,
+        data?: D,
+        config?: AxiosRequestConfig
+    ): Promise<R> {
+        return this.http.post<T, R>(url, data, config)
+    }
+
     private handleError(error: any) {
         const {status} = error;
 
