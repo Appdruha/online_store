@@ -1,12 +1,4 @@
 import axios, {AxiosRequestConfig, InternalAxiosRequestConfig, AxiosResponse, AxiosInstance} from "axios";
-import {IRequestDeviceData} from "../models/IRequestData";
-
-enum StatusCode {
-    Unauthorized = 401,
-    Forbidden = 403,
-    TooManyRequests = 429,
-    InternalServerError = 500,
-}
 
 const headers: Readonly<Record<string, string | boolean>> = {
     Accept: "application/json",
@@ -15,11 +7,11 @@ const headers: Readonly<Record<string, string | boolean>> = {
     "X-Requested-With": "XMLHttpRequest",
 };
 
-const injectToken = (config: InternalAxiosRequestConfig): AxiosRequestConfig => {
+const injectToken = (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
     try {
         const token = localStorage.getItem("token")
 
-        if (token != null) {
+        if (token !== null) {
             config.headers.Authorization = `Bearer ${token}`
         }
         return config
@@ -41,6 +33,8 @@ class Http {
             headers,
             withCredentials: false,
         })
+
+        http.interceptors.request.use(injectToken, error => Promise.reject(error))
 
         http.interceptors.response.use(
             (response) => response,
@@ -70,15 +64,7 @@ class Http {
     }
 
     private handleError(error: any) {
-        const {status} = error;
-
-        switch (status) {
-            case StatusCode.InternalServerError: {
-                // Handle InternalServerError
-                break;
-            }
-        }
-        return Promise.reject(error)
+        return Promise.reject(error.data)
     }
 }
 

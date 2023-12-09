@@ -1,7 +1,8 @@
 import {IUser} from "../../models/IUser";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {login} from "./thunks/userThunks";
-import {IAuthResponse} from "../../models/IAuth";
+import {authentification} from "./thunks/userThunks";
+import {jwtDecode} from "jwt-decode"
+import {IDecodedToken} from "../../models/IAuth";
 
 interface IUserState extends IUser {
     isFetching: boolean;
@@ -21,23 +22,35 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         checkAuth (state) {
-            if (localStorage.getItem("token")) {
+            const token = localStorage.getItem("token")
+            if (token !== null) {
+                const tokenData: IDecodedToken = jwtDecode(token)
+                state.id = tokenData.id
+                state.role = tokenData.role
                 state.isAuth = true
             }
+        },
+
+        logout (state) {
+            localStorage.removeItem("token")
+            state.id = undefined
+            state.role = undefined
+            state.isAuth = false
         }
     },
     extraReducers: (builder) => {
         builder
-            .addCase(login.fulfilled,
-                (state, action: PayloadAction<IAuthResponse>) => {
+            .addCase(authentification.fulfilled.type,
+                (state, action: PayloadAction<IDecodedToken>) => {
                     state.isFetching = false
-                    localStorage.setItem("token", action.payload.token)
+                    state.id = action.payload.id
+                    state.role = action.payload.role
                     state.isAuth = true
                 })
-            .addCase(login.pending, (state) => {
+            .addCase(authentification.pending, (state) => {
                 state.isFetching = true
             })
-            .addCase(login.rejected.type,
+            .addCase(authentification.rejected.type,
                 (state, action: PayloadAction<string>) => {
                 state.isFetching = false
                 state.error = action.payload

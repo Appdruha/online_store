@@ -1,6 +1,6 @@
 import React from 'react';
 import {NavLink} from "react-router-dom";
-import {LOGIN_ROUTE, SHOP_ROUTE} from "../../utils/consts";
+import {ADMIN_ROUTE, BASKET_ROUTE, SHOP_ROUTE} from "../../utils/consts";
 import styles from "./navbar.module.css";
 
 const Navbar = () => {
@@ -8,8 +8,8 @@ const Navbar = () => {
         <nav className={styles.menu}>
             <ol>
                 <li><NavLink to={SHOP_ROUTE}>Главная</NavLink></li>
-                <li><NavLink to={LOGIN_ROUTE}>войти</NavLink></li>
-                <li>Корзина</li>
+                <li><NavLink to={BASKET_ROUTE}>Корзина</NavLink></li>
+                <li><NavLink to={ADMIN_ROUTE}>Панель администратора</NavLink></li>
             </ol>
         </nav>
     );

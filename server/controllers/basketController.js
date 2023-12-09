@@ -4,10 +4,10 @@ const {Op} = require("sequelize");
 
 class BasketController {
     async getBasket(req, res) {
-        const {userId} = req.body
-        const basketDevices = await BasketDevice.findAll({where: {basketId: userId}})
+        const {basketId} = req.query
+        const basketDevices = await BasketDevice.findAll({where: {basketId}})
         const deviceArr = JSON.parse(JSON.stringify(basketDevices)).map(device => ({id: device.deviceId}))
-        const devices = await Device.findAll({where: {
+        const devices = await Device.findAndCountAll({where: {
             [Op.or]: deviceArr
         }})
         return res.json(devices)

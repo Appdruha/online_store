@@ -13,13 +13,17 @@ const generateJwt = (id, email, role) => {
 
 class UserController {
     async registration(req, res, next) {
-        const {email, password, role} = req.body
+        const {email, password, roleKey} = req.body
         if(!email || !password) {
             return next(ApiError.badRequest('Некорректный email или пароль'))
         }
         const candidate = await User.findOne(({where: {email}}))
         if (candidate) {
             return next(ApiError.badRequest('Такой email уже зарегистрирован'))
+        }
+        let role = "USER"
+        if (roleKey === process.env.ADMIN_KEY) {
+            role = "ADMIN"
         }
         const hashPassword = await bcrypt.hash(password, 5)
         const user = await User.create({email, password: hashPassword, role})

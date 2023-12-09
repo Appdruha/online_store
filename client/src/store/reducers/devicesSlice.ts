@@ -68,7 +68,7 @@ export const devicesSlice = createSlice({
                         row.typeName = state.brands[row.typeId - 1].name
                     })
                 })
-            .addCase(fetchBrandsAndTypes.pending.type, (state) => {
+            .addCase(fetchBrandsAndTypes.pending, (state) => {
                 state.isFetching = true
             })
             .addCase(fetchBrandsAndTypes.rejected.type,

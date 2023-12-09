@@ -2,7 +2,7 @@ import React from "react";
 import {useAppDispatch, useAppSelector} from "../../hooks/redux-hooks";
 import {useEffect} from "react";
 import {fetchBrandsAndTypes, fetchAllDevices} from "../../store/reducers/thunks/devicesThunks";
-import DeviceBox from "./deviceBox";
+import DeviceBox from "../common/deviceBox";
 import styles from "./shop.module.css";
 
 function Shop() {

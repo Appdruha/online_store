@@ -1,15 +1,14 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {IAuth} from "../../../models/IAuth";
-import {loginRequest} from "../../../requestAPI/userAPI";
+import {authRequest} from "../../../requestAPI/userAPI";
 
-
-export const login = createAsyncThunk(
-    "authPage/login",
-    async (formData: IAuth, thunkAPI) => {
+export const authentification = createAsyncThunk(
+    "authPage/authentification",
+    async (requestData: IAuth, thunkAPI) => {
         try {
-            return await loginRequest(formData)
-        } catch (e) {
-            return thunkAPI.rejectWithValue("Ошибка при обработке запроса")
+            return await authRequest(requestData)
+        } catch (e: any) {
+            return thunkAPI.rejectWithValue(e.message)
         }
     }
 )

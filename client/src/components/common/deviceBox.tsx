@@ -1,6 +1,6 @@
 import React from "react";
 import {IDevice} from "../../models/IDevice";
-import styles from "./shop.module.css"
+import styles from "../shopPage/shop.module.css"
 import {useNavigate} from "react-router-dom";
 import {DEVICE_ROUTE} from "../../utils/consts";
 

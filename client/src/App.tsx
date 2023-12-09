@@ -4,6 +4,7 @@ import RootRouter from "./components/rootRouter";
 import Navbar from "./components/navbar/navbar";
 import {useAppDispatch} from "./hooks/redux-hooks";
 import {userSlice} from "./store/reducers/UserSlice";
+import Header from "./components/header/header";
 
 function App() {
 
@@ -16,9 +17,7 @@ function App() {
 
     return (
         <div className={styles.appBody}>
-            <header className={styles.header}>
-                <button>Выйти</button>
-            </header>
+            <Header/>
             <main className={styles.main}>
                 <Navbar/>
                 <RootRouter/>

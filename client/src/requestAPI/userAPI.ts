@@ -1,8 +1,15 @@
 import {http} from "./index";
-import {IAuth, IAuthResponse} from "../models/IAuth";
+import {IAuth} from "../models/IAuth";
+import {jwtDecode} from "jwt-decode";
 
-export const loginRequest = async (formData: IAuth)=> {
-    const {email, password} = formData
-    const {data} = await http.post<IAuthResponse, IAuth>("user/login", {email, password})
-    return data
+interface IAuthResponse {
+    token: string;
+}
+
+export const authRequest = async (requestData: IAuth)=> {
+    const {email, password, endpoint, roleKey} = requestData
+    const {data} =
+        await http.post<IAuthResponse, Omit<IAuth, "endpoint">>("user/" + endpoint, {email, password, roleKey})
+    localStorage.setItem("token", data.token)
+    return jwtDecode(data.token)
 }

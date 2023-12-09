@@ -2,13 +2,14 @@ import React from 'react';
 import {useForm, SubmitHandler} from "react-hook-form"
 import {NavLink, useLocation, useNavigate} from "react-router-dom";
 import {LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE} from "../../utils/consts";
-import {login} from "../../store/reducers/thunks/userThunks";
+import {authentification} from "../../store/reducers/thunks/userThunks";
 import {useAppDispatch, useAppSelector} from "../../hooks/redux-hooks";
 
 type Inputs = {
     email: string;
     password: string;
     confirmPassword: string;
+    roleKey?: string;
 }
 
 const AuthPage = () => {
@@ -32,8 +33,11 @@ const AuthPage = () => {
     } = useForm<Inputs>()
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
+        let endpoint: string
+        isLogin ? endpoint = "login" : endpoint = "registration"
         try {
-            await dispatch(login(data))
+            const {email, password, roleKey} = data
+            await dispatch(authentification({email, password, endpoint, roleKey}))
         } catch (e: any) {
             alert(e.message)
         }
@@ -69,16 +73,22 @@ const AuthPage = () => {
             </div>
 
             {!isLogin ?
-            <div>
-                <input type="password" placeholder=" " {...register("confirmPassword", {
-                    required: "Поле не зполнено",
-                    validate: (match) => {
-                        const password = getValues("password")
-                        return match === password || "Пароли не совпадают"
-                    }
-                })}/>
-                {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
-            </div>
+                <>
+                    <div>
+                        <input type="password" placeholder=" " {...register("confirmPassword", {
+                            required: "Поле не зполнено",
+                            validate: (match) => {
+                                const password = getValues("password")
+                                return match === password || "Пароли не совпадают"
+                            }
+                        })}/>
+                        {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
+                    </div>
+
+                    <div>
+                        <input placeholder=" " {...register("roleKey")}/>
+                    </div>
+                </>
                 : null
             }
 
