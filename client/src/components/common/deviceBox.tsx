@@ -1,14 +1,28 @@
 import React from "react";
 import {IDevice} from "../../models/IDevice";
 import styles from "../shopPage/shop.module.css"
-import {useNavigate} from "react-router-dom";
-import {DEVICE_ROUTE} from "../../utils/consts";
+import {useLocation, useNavigate} from "react-router-dom";
+import {BASKET_ROUTE, DEVICE_ROUTE} from "../../utils/consts";
+import {useAppDispatch} from "../../hooks/redux-hooks";
+import {putDeviceToBasket, removeDeviceFromBasket} from "../../store/reducers/thunks/devicesThunks";
 
 const DeviceBox = (props: IDevice) => {
 
     const navigate = useNavigate()
+    const location = useLocation()
+    const dispatch = useAppDispatch()
+    const isBasket = location.pathname === BASKET_ROUTE
+
     const redirect = () => {
         navigate(DEVICE_ROUTE + `/${props.id}`)
+    }
+
+    const addToBasket = (deviceId: number) => {
+        dispatch(putDeviceToBasket(`${deviceId}`))
+    }
+
+    const removeFromBasket = (deviceId: number) => {
+        dispatch(removeDeviceFromBasket(`${deviceId}`))
     }
 
     return (
@@ -26,6 +40,11 @@ const DeviceBox = (props: IDevice) => {
                 <div>{props.rating}</div>
                 <div>{props.price}</div>
             </div>
+            {isBasket ?
+                <button onClick={() => removeFromBasket(props.id)}>Удалить из корзины</button>
+                :
+                <button onClick={() => addToBasket(props.id)}>Добавить в корзину</button>
+            }
         </div>
     )
 }

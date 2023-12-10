@@ -1,6 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {IRequestDeviceData} from "../../../models/IRequestData";
-import {getBrands, getDevice, getDevices, getTypes} from "../../../requestAPI/deviceAPI";
+import {getBrands, getDevice, getDevices, getTypes, putToBasket, removeFromBasket} from "../../../requestAPI/deviceAPI";
 
 export const fetchAllDevices = createAsyncThunk(
     "shopPage/fetchAllDevices",
@@ -33,6 +33,28 @@ export const fetchBrandsAndTypes = createAsyncThunk(
             return {brands, types}
         } catch (e) {
             return thunkAPI.rejectWithValue("Ошибка при загрузке брендов")
+        }
+    }
+)
+
+export const putDeviceToBasket = createAsyncThunk(
+    "basketPage/putDeviceToBasket",
+    async (deviceId: string, thunkAPI) => {
+        try {
+            await putToBasket(deviceId)
+        } catch (e) {
+            return thunkAPI.rejectWithValue("Ошибка при добавлении в корзину")
+        }
+    }
+)
+
+export const removeDeviceFromBasket = createAsyncThunk(
+    "basketPage/removeDeviceFromBasket",
+    async (deviceId: string, thunkAPI) => {
+        try {
+            await removeFromBasket(deviceId)
+        } catch (e) {
+            return thunkAPI.rejectWithValue("Ошибка при удалении из корзины")
         }
     }
 )

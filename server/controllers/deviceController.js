@@ -109,9 +109,9 @@ class DeviceController {
     }
 
     async addDeviceToBasket(req, res) {
-        const {id} = req.params
-        const {userId} = req.body
-        const basketDevice = await BasketDevice.create({deviceId: id, basketId: userId})
+        const {deviceId} = req.body
+        const {id} = req.user
+        const basketDevice = await BasketDevice.create({deviceId, basketId: id})
         return res.json(basketDevice)
     }
 
@@ -123,7 +123,8 @@ class DeviceController {
 
     async removeDeviceFromBasket(req, res) {
         const {id} = req.params
-        const {userId} = req.query
+        const userId = req.user.id
+        console.log(req.params)
         const removedDevice = await BasketDevice.destroy({where: {basketId: userId, deviceId: id}})
         return res.json(removedDevice)
     }

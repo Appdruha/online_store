@@ -23,3 +23,12 @@ export const getTypes = async () => {
     const {data} = await http.get<IType[]>(`type`)
     return data
 }
+
+export const putToBasket = async (deviceId: string) => {
+    await http.post<any, {deviceId: string}>("device/toBasket", {deviceId})
+}
+
+export const removeFromBasket = async (deviceId: string) => {
+    await http.delete<any>(`device/${deviceId}/fromBasket`)
+}
+

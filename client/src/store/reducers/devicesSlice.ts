@@ -1,6 +1,12 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {IDevice, IDevices} from "../../models/IDevice";
-import {fetchBrandsAndTypes, fetchAllDevices, fetchOneDevice} from "./thunks/devicesThunks";
+import {
+    fetchBrandsAndTypes,
+    fetchAllDevices,
+    fetchOneDevice,
+    putDeviceToBasket,
+    removeDeviceFromBasket
+} from "./thunks/devicesThunks";
 import {IBrand, IType, ITypesAndBrands} from "../../models/ITypesAndBrands";
 
 interface DevicesState extends IDevices {
@@ -39,24 +45,24 @@ export const devicesSlice = createSlice({
             })
             .addCase(fetchAllDevices.rejected.type,
                 (state, action: PayloadAction<string>) => {
-                state.isFetching = false
-                state.error = action.payload
-            })
+                    state.isFetching = false
+                    state.error = action.payload
+                })
 
             .addCase(fetchOneDevice.fulfilled.type,
                 (state, action: PayloadAction<IDevice>) => {
-                state.isFetching = false
-                state.error = ''
-                state.currentDevice = action.payload
-            })
+                    state.isFetching = false
+                    state.error = ''
+                    state.currentDevice = action.payload
+                })
             .addCase(fetchOneDevice.pending.type, (state) => {
                 state.isFetching = true
             })
             .addCase(fetchOneDevice.rejected.type,
                 (state, action: PayloadAction<string>) => {
-                state.isFetching = false
-                state.error = action.payload
-            })
+                    state.isFetching = false
+                    state.error = action.payload
+                })
 
             .addCase(fetchBrandsAndTypes.fulfilled.type,
                 (state, action: PayloadAction<ITypesAndBrands>) => {
@@ -73,9 +79,33 @@ export const devicesSlice = createSlice({
             })
             .addCase(fetchBrandsAndTypes.rejected.type,
                 (state, action: PayloadAction<string>) => {
+                    state.isFetching = false
+                    state.error = action.payload
+                })
+
+            .addCase(putDeviceToBasket.fulfilled, (state) => {
                 state.isFetching = false
-                console.log(action.payload)
             })
+            .addCase(putDeviceToBasket.pending, (state) => {
+                state.isFetching = true
+            })
+            .addCase(putDeviceToBasket.rejected.type,
+                (state, action: PayloadAction<string>) => {
+                    state.isFetching = false
+                    state.error = action.payload
+                })
+
+            .addCase(removeDeviceFromBasket.fulfilled, (state) => {
+                state.isFetching = false
+            })
+            .addCase(removeDeviceFromBasket.pending, (state) => {
+                state.isFetching = true
+            })
+            .addCase(removeDeviceFromBasket.rejected.type,
+                (state, action: PayloadAction<string>) => {
+                    state.isFetching = false
+                    state.error = action.payload
+                })
     }
 })
 

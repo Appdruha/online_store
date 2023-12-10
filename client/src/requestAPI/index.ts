@@ -55,6 +55,13 @@ class Http {
         return this.http.get<T, R>(url, config)
     }
 
+    delete<T, R = AxiosResponse<T>>(
+        url: string,
+        config?: AxiosRequestConfig
+    ): Promise<R> {
+        return this.http.delete<T, R>(url, config)
+    }
+
     post<T, D, R = AxiosResponse<T>>(
         url: string,
         data?: D,

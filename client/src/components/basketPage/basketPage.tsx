@@ -43,7 +43,6 @@ const BasketPage = () => {
             typeName={row.typeName}
         />
     )
-    console.log(deviceBoxes)
 
     return (
         <div>
