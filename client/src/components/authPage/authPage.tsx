@@ -9,13 +9,14 @@ type Inputs = {
     email: string;
     password: string;
     confirmPassword: string;
+    rememberMe: boolean;
     roleKey?: string;
 }
 
 const AuthPage = () => {
 
     const navigate = useNavigate()
-    const {error, isFetching, isAuth} =
+    const {isFetching, isAuth} =
         useAppSelector(state => state.userReducer)
     const dispatch = useAppDispatch()
     const {pathname} = useLocation()
@@ -36,8 +37,8 @@ const AuthPage = () => {
         let endpoint: string
         isLogin ? endpoint = "login" : endpoint = "registration"
         try {
-            const {email, password, roleKey} = data
-            await dispatch(authentification({email, password, endpoint, roleKey}))
+            const {email, password, rememberMe, roleKey} = data
+            await dispatch(authentification({email, password, endpoint, rememberMe, roleKey}))
         } catch (e: any) {
             alert(e.message)
         }
@@ -45,10 +46,6 @@ const AuthPage = () => {
 
     if (isFetching) {
         return <h1>Loading</h1>
-    }
-
-    if (error) {
-        return <h1>{error}</h1>
     }
 
     return (
@@ -101,6 +98,8 @@ const AuthPage = () => {
                     Есть аккаунт? <NavLink to={LOGIN_ROUTE}>Войдите!</NavLink>
                 </div>
             }
+
+            <input type="checkbox" {...register("rememberMe")}/>
 
             <button type="submit">Принять</button>
         </form>

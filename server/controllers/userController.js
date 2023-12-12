@@ -2,18 +2,29 @@ const ApiError = require('../errors/ApiError')
 const bcrypt = require('bcrypt')
 const {User, Basket} = require('../models/models')
 const jwt = require('jsonwebtoken')
+const cookie = require('cookie')
 
 const generateJwt = (id, email, role) => {
     return jwt.sign(
         {id, email, role},
         process.env.SECRET_KEY,
-        {expiresIn: '24h'}
+        {expiresIn: '1d'}
     )
 }
 
+const generateRefreshToken = (id, email, role) => {
+    return jwt.sign(
+        {id, email, role},
+        process.env.REFRESH_KEY,
+        {expiresIn: '30d'}
+    )
+}
+
+const cookieMaxAge = 60*60*24*30
+
 class UserController {
     async registration(req, res, next) {
-        const {email, password, roleKey} = req.body
+        const {email, password, roleKey, rememberMe} = req.body
         if(!email || !password) {
             return next(ApiError.badRequest('Некорректный email или пароль'))
         }
@@ -27,13 +38,20 @@ class UserController {
         }
         const hashPassword = await bcrypt.hash(password, 5)
         const user = await User.create({email, password: hashPassword, role})
+        req.user = user
         const basket = await Basket.create({userId: user.id})
-        const token = generateJwt(user.id, user.email, user.role)
-        return res.json({token})
+
+        if (rememberMe) {
+            next(UserController.sendRefreshToken(req, res, next))
+        }
+        else {
+            const token = generateJwt(user.id, user.email, user.role)
+            return res.json({token})
+        }
     }
 
     async login(req, res, next) {
-        const {email, password} = req.body
+        const {email, password, rememberMe} = req.body
         const user = await User.findOne({where: {email}})
         if (!user) {
             return next(ApiError.internal('Пользователь не найден'))
@@ -42,12 +60,35 @@ class UserController {
         if (!comparePassword) {
             return next(ApiError.internal('Неверный пароль'))
         }
-        const token = generateJwt(user.id, user.email, user.role)
-        return res.json({token})
+        req.user = user
+
+        if (rememberMe) {
+            next(UserController.sendRefreshToken(req, res, next))
+        }
+        else {
+            const token = generateJwt(user.id, user.email, user.role)
+            return res.json({token})
+        }
     }
 
     async check(req, res, next) {
         const token = generateJwt(req.user.id, req.user.email, req.user.role)
+        return res.json({token})
+    }
+
+    static sendRefreshToken(req, res, next) {
+        const user = req.user
+        const token = generateJwt(user.id, user.email, user.role)
+        const refreshToken = generateRefreshToken(user.id, user.email, user.role)
+         res.setHeader(
+            "set-cookie",
+            cookie.serialize("refreshToken", refreshToken, {
+                maxAge: cookieMaxAge,
+                httpOnly: false,
+                path: '/'
+            })
+        )
+
         return res.json({token})
     }
 }

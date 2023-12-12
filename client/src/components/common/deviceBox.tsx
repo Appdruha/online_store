@@ -26,9 +26,9 @@ const DeviceBox = (props: IDevice) => {
     }
 
     return (
-        <div className={styles.deviceBox} onClick={redirect}>
+        <div className={styles.deviceBox}>
             <div className={styles.deviceBox_header}>
-                <div>{props.name}</div>
+                <div onClick={redirect}>{props.name}</div>
                 <div>{props.brandName}</div>
                 <div>{props.typeName}</div>
             </div>

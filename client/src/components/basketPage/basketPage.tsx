@@ -17,12 +17,8 @@ const BasketPage = () => {
             dispatch(getBasket(`${id}`))
     }, [id]);
 
-    if (!isAuth) {
+    if (!isAuth || error) {
         return <div>Чтобы просматривать корзину нужно <NavLink to={LOGIN_ROUTE}>авторизироваться</NavLink></div>
-    }
-
-    if (error) {
-        return <h1>{error}</h1>
     }
 
     if (isFetching) {

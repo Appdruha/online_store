@@ -7,7 +7,8 @@ export const getBasket = createAsyncThunk(
         try {
             return await requestBasket(basketId)
         } catch (e: any) {
-            thunkAPI.rejectWithValue(e.message)
+            return thunkAPI.rejectWithValue(e.message)
         }
     }
 )
+

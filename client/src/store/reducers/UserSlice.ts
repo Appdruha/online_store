@@ -1,7 +1,6 @@
 import {IUser} from "../../models/IUser";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {authentification} from "./thunks/userThunks";
-import {jwtDecode} from "jwt-decode"
+import {authentification, reauthentication} from "./thunks/userThunks";
 import {IDecodedToken} from "../../models/IAuth";
 
 interface IUserState extends IUser {
@@ -21,16 +20,6 @@ export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        checkAuth (state) {
-            const token = localStorage.getItem("token")
-            if (token !== null) {
-                const tokenData: IDecodedToken = jwtDecode(token)
-                state.id = tokenData.id
-                state.role = tokenData.role
-                state.isAuth = true
-            }
-        },
-
         logout (state) {
             localStorage.removeItem("token")
             state.id = undefined
@@ -55,6 +44,22 @@ export const userSlice = createSlice({
                 state.isFetching = false
                 state.error = action.payload
             })
+
+            .addCase(reauthentication.fulfilled.type,
+                (state, action: PayloadAction<IDecodedToken>) => {
+                    state.isFetching = false
+                    state.id = action.payload.id
+                    state.role = action.payload.role
+                    state.isAuth = true
+                })
+            .addCase(reauthentication.pending, (state) => {
+                state.isFetching = true
+            })
+            .addCase(reauthentication.rejected.type,
+                (state, action: PayloadAction<string>) => {
+                    state.isFetching = false
+                    state.error = action.payload
+                })
     }
 })
 

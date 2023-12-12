@@ -5,6 +5,8 @@ const headers: Readonly<Record<string, string | boolean>> = {
     "Content-Type": "application/json; charset=utf-8",
     "Access-Control-Allow-Credentials": true,
     "X-Requested-With": "XMLHttpRequest",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
 };
 
 const injectToken = (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
@@ -31,7 +33,7 @@ class Http {
         const http = axios.create({
             baseURL: import.meta.env.VITE_REACT_APP_API_URL + "api/",
             headers,
-            withCredentials: false,
+            withCredentials: true,
         })
 
         http.interceptors.request.use(injectToken, error => Promise.reject(error))
