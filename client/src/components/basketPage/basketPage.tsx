@@ -4,6 +4,7 @@ import {NavLink} from "react-router-dom";
 import {LOGIN_ROUTE} from "../../utils/consts";
 import DeviceBox from "../common/deviceBox";
 import {getBasket} from "../../store/reducers/thunks/basketThunks";
+import styles from "./basket.module.css"
 
 const BasketPage = () => {
 
@@ -41,7 +42,7 @@ const BasketPage = () => {
     )
 
     return (
-        <div>
+        <div className={styles.container}>
             {deviceBoxes.length === 0 ? <h1>Корзина пуста</h1> : deviceBoxes}
         </div>
     );

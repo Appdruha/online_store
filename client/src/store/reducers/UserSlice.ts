@@ -25,6 +25,7 @@ export const userSlice = createSlice({
             state.id = undefined
             state.role = undefined
             state.isAuth = false
+            state.error = ""
         }
     },
     extraReducers: (builder) => {
@@ -35,6 +36,7 @@ export const userSlice = createSlice({
                     state.id = action.payload.id
                     state.role = action.payload.role
                     state.isAuth = true
+                    state.error = ""
                 })
             .addCase(authentification.pending, (state) => {
                 state.isFetching = true
@@ -51,6 +53,7 @@ export const userSlice = createSlice({
                     state.id = action.payload.id
                     state.role = action.payload.role
                     state.isAuth = true
+                    state.error = ""
                 })
             .addCase(reauthentication.pending, (state) => {
                 state.isFetching = true

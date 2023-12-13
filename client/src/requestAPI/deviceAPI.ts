@@ -32,3 +32,11 @@ export const removeFromBasket = async (deviceId: string) => {
     await http.delete<any>(`device/${deviceId}/fromBasket`)
 }
 
+export const addBrandRequest = async (name: string) => {
+    await http.post<any, {name: string}>("brand", {name})
+}
+
+export const addTypeRequest = async (name: string) => {
+    await http.post<any, {name: string}>("type", {name})
+}
+

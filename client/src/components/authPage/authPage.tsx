@@ -16,7 +16,7 @@ type Inputs = {
 const AuthPage = () => {
 
     const navigate = useNavigate()
-    const {isFetching, isAuth} =
+    const {isFetching, isAuth, error} =
         useAppSelector(state => state.userReducer)
     const dispatch = useAppDispatch()
     const {pathname} = useLocation()
@@ -48,6 +48,7 @@ const AuthPage = () => {
         return <h1>Loading</h1>
     }
 
+
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
 
@@ -56,9 +57,10 @@ const AuthPage = () => {
             <div>
                 <input placeholder=" " {...register("email", {
                     required: "Поле не зполнено",
-                    pattern: {value: /^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i, message: "Некорректный email"}
+                    pattern: {value: /^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i, message: "Некорректный email"},
                 })}/>
                 {errors.email && <p>{errors.email.message}</p>}
+                {error && <p>{error}</p>}
             </div>
 
             <div>

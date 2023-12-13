@@ -8,6 +8,7 @@ import {reauthentication} from "./store/reducers/thunks/userThunks";
 import Cookies from "universal-cookie";
 import {jwtDecode} from "jwt-decode";
 import {IDecodedToken} from "./models/IAuth";
+import {fetchBrandsAndTypes} from "./store/reducers/thunks/devicesThunks";
 
 function App() {
 
@@ -39,6 +40,7 @@ function App() {
 
     useEffect(() => {
         checkExpirationDate()
+        dispatch(fetchBrandsAndTypes())
     }, []);
 
     return (

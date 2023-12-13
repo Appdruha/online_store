@@ -1,6 +1,14 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {IRequestDeviceData} from "../../../models/IRequestData";
-import {getBrands, getDevice, getDevices, getTypes, putToBasket, removeFromBasket} from "../../../requestAPI/deviceAPI";
+import {
+    addBrandRequest, addTypeRequest,
+    getBrands,
+    getDevice,
+    getDevices,
+    getTypes,
+    putToBasket,
+    removeFromBasket
+} from "../../../requestAPI/deviceAPI";
 
 export const fetchAllDevices = createAsyncThunk(
     "shopPage/fetchAllDevices",
@@ -55,6 +63,22 @@ export const removeDeviceFromBasket = createAsyncThunk(
             await removeFromBasket(deviceId)
         } catch (e) {
             return thunkAPI.rejectWithValue("Ошибка при удалении из корзины")
+        }
+    }
+)
+
+export const addTypeOrBrand = createAsyncThunk(
+    "aminPage/addTypeOrBrand",
+    async (data: { name: string, isBrandRequest: boolean },
+           thunkAPI) => {
+        try {
+            if (data.isBrandRequest) {
+                await addBrandRequest(data.name)
+            } else {
+                await addTypeRequest(data.name)
+            }
+        } catch (e: any) {
+            return thunkAPI.rejectWithValue(e.message)
         }
     }
 )
