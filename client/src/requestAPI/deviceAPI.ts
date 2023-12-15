@@ -3,9 +3,13 @@ import {IRequestDeviceData} from "../models/IRequestData";
 import {IDevice, IDevices} from "../models/IDevice";
 import {IBrand, IType} from "../models/ITypesAndBrands";
 
+export const createDeviceRequest = async (requestData: FormData) => {
+    await  http.post<any, FormData>("device", requestData,
+        {headers: {"Content-Type": "multipart/form-data"}})
+}
+
 export const getDevices = async (requestData: IRequestDeviceData) => {
-    const {page, limit, brandId, typeId} = requestData
-    const {data} = await http.get<IDevices>("device", {params: {page, limit, brandId, typeId}})
+    const {data} = await http.get<IDevices>("device", {params: {...requestData}})
     return data
 }
 

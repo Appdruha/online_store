@@ -1,7 +1,7 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {IRequestDeviceData} from "../../../models/IRequestData";
 import {
-    addBrandRequest, addTypeRequest,
+    addBrandRequest, addTypeRequest, createDeviceRequest,
     getBrands,
     getDevice,
     getDevices,
@@ -9,6 +9,17 @@ import {
     putToBasket,
     removeFromBasket
 } from "../../../requestAPI/deviceAPI";
+
+export const createDevice = createAsyncThunk(
+    "adminPage/createDevice",
+    async (requestData: FormData, thunkAPI) => {
+        try {
+            return await createDeviceRequest(requestData)
+        } catch (e: any) {
+            return thunkAPI.rejectWithValue(e.message)
+        }
+    }
+)
 
 export const fetchAllDevices = createAsyncThunk(
     "shopPage/fetchAllDevices",

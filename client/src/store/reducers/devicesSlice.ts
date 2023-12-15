@@ -5,7 +5,7 @@ import {
     fetchAllDevices,
     fetchOneDevice,
     putDeviceToBasket,
-    removeDeviceFromBasket, addTypeOrBrand
+    removeDeviceFromBasket, addTypeOrBrand, createDevice
 } from "./thunks/devicesThunks";
 import {IBrand, IType, ITypesAndBrands} from "../../models/ITypesAndBrands";
 
@@ -33,6 +33,20 @@ export const devicesSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            .addCase(createDevice.fulfilled.type,
+                (state) => {
+                    state.isFetching = false
+                    state.error = ''
+                })
+            .addCase(createDevice.pending, (state) => {
+                state.isFetching = true
+            })
+            .addCase(createDevice.rejected.type,
+                (state, action: PayloadAction<string>) => {
+                    state.isFetching = false
+                    state.error = action.payload
+                })
+
             .addCase(fetchAllDevices.fulfilled,
                 (state, action: PayloadAction<IDevices>) => {
                     state.isFetching = false

@@ -1,15 +1,17 @@
 import React from 'react';
-import {useAppSelector} from "../../hooks/redux-hooks";
+import {useAppDispatch, useAppSelector} from "../../hooks/redux-hooks";
 import {useForm, FormProvider, SubmitHandler} from "react-hook-form";
 import {IBrand, IType} from "../../models/ITypesAndBrands";
 import {IOption} from "../../models/ISelectOptions";
 import ControlledSelect from "../UI/controlledSelect";
 import CreateDeviceFormInput from "../UI/createDevice.formInput";
-
+import CreateDeviceTextarea from "../UI/createDevice.textarea";
+import {createDevice} from "../../store/reducers/thunks/devicesThunks";
+import {arrayToOptions} from "../../utils/transformArrayToOpions";
 
 type Inputs = {
     name: string,
-    price: string,
+    price: number,
     title: string,
     description: string,
     img: FileList,
@@ -19,12 +21,9 @@ type Inputs = {
 
 const CreateDevice = () => {
 
+    const dispatch = useAppDispatch()
     const {brands, types, error, isFetching} =
         useAppSelector(state => state.devicesReducer)
-
-    const arrayToOptions = (array: IType[] | IBrand[]): IOption[] => {
-        return array.map(el => ({value: el.id, label: el.name}))
-    }
 
     const methods = useForm<Inputs>()
 
@@ -34,11 +33,20 @@ const CreateDevice = () => {
     } = methods
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
+
         const typeId = data.type.value
         const brandId = data.brand.value
         const img = data.img[0]
         const {name, price, title, description} = data
-        console.log({typeId, brandId, name, price, title, description, img})
+        const info = {title, description}
+        const formData = new FormData()
+        formData.append("typeId", `${typeId}`)
+        formData.append("brandId", `${brandId}`)
+        formData.append("price", `${price}`)
+        formData.append("name", name)
+        formData.append("info", JSON.stringify(info))
+        formData.append("img", img)
+        dispatch(createDevice(formData))
     }
 
     return (
@@ -55,14 +63,19 @@ const CreateDevice = () => {
                 <ControlledSelect name={"type"} options={arrayToOptions(types)}/>
                 <p>{errors.type?.message}</p>
 
-                <CreateDeviceFormInput name={"price"} label={"Цена"} type={"text"}/>
+                <CreateDeviceFormInput name={"price"} label={"Цена"} type={"number"}/>
                 <p>{errors.price?.message}</p>
 
                 <CreateDeviceFormInput name={"img"} label={"Изображение"} type={"file"}/>
                 <p>{errors.price?.message}</p>
 
-                <button type="submit">Создать</button>
+                <CreateDeviceTextarea name={"title"} label={"Заголовок"}/>
+                <p>{errors.title?.message}</p>
 
+                <CreateDeviceTextarea name={"description"} label={"Описание"}/>
+                <p>{errors.description?.message}</p>
+
+                <button type="submit">Создать</button>
             </form>
         </FormProvider>
     );

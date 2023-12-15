@@ -14,6 +14,7 @@ const AdminPage = () => {
     const deactivateModals = () => {
         setIsBrandModalActive(false)
         setIsTypeModalActive(false)
+        setIsDeviceModalActive(false)
     }
 
     const activateModal = (e: React.MouseEvent<HTMLElement>) => {

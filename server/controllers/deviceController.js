@@ -7,6 +7,8 @@ const ApiError = require('../errors/ApiError')
 class DeviceController {
     async create(req, res, next) {
         try {
+            console.log(req.body, "ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd")
+            console.log(req.files, "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
             let {name, price, brandId, typeId, info} = req.body
             const {img} = req.files
             let fileName = uuid.v4() + '.jpg'

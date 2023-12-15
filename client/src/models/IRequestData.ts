@@ -1,6 +1,6 @@
 export interface IRequestDeviceData {
-    page: string;
-    limit: string;
-    brandId?: string;
-    typeId?: string;
+    page: number;
+    limit: number;
+    brandId?: number;
+    typeId?: number;
 }
