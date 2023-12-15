@@ -37,8 +37,7 @@ const AuthPage = () => {
         let endpoint: string
         isLogin ? endpoint = "login" : endpoint = "registration"
         try {
-            const {email, password, rememberMe, roleKey} = data
-            await dispatch(authentification({email, password, endpoint, rememberMe, roleKey}))
+            await dispatch(authentification({...data, endpoint}))
         } catch (e: any) {
             alert(e.message)
         }

@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {useAppDispatch, useAppSelector} from "../../hooks/redux-hooks";
 import {NavLink} from "react-router-dom";
 import {LOGIN_ROUTE} from "../../utils/consts";
-import DeviceBox from "../common/deviceBox";
+import DeviceBox from "../UI/deviceBox";
 import {getBasket} from "../../store/reducers/thunks/basketThunks";
 import styles from "./basket.module.css"
 
