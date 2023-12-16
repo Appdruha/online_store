@@ -18,6 +18,10 @@ export const getDevice = async (id: string) => {
     return data
 }
 
+export const deleteDevice = async (id: string) => {
+    await http.delete<IDevice>(`device/${id}`)
+}
+
 export const getBrands = async () => {
     const {data} = await http.get<IBrand[]>(`brand`)
     return data
@@ -42,5 +46,18 @@ export const addBrandRequest = async (name: string) => {
 
 export const addTypeRequest = async (name: string) => {
     await http.post<any, {name: string}>("type", {name})
+}
+
+export const setRatingRequest = async (data: {deviceId: string, rate: number}) => {
+    await http.post<any, {rate: number, deviceId: string}>(`device/rating`, {...data})
+}
+
+export const getRatedDevicesRequest = async () => {
+    const {data} = await http.get<{deviceId: number}[]>(`device/rating`)
+    return data
+}
+
+export const changeRatingRequest = async (data: {deviceId: string, rate: number}) => {
+    await http.put<any, {rate: number, deviceId: string}>(`device/rating`, {...data})
 }
 

@@ -5,7 +5,7 @@ import {
     fetchAllDevices,
     fetchOneDevice,
     putDeviceToBasket,
-    removeDeviceFromBasket, addTypeOrBrand, createDevice
+    removeDeviceFromBasket, addTypeOrBrand, createDevice, removeDevice, setDeviceRating, getRatedDevices
 } from "./thunks/devicesThunks";
 import {IBrand, IType, ITypesAndBrands} from "../../models/ITypesAndBrands";
 
@@ -15,6 +15,7 @@ interface DevicesState extends IDevices {
     currentDevice: null | IDevice;
     isFetching: boolean;
     error: string;
+    ratedDevicesID: number[];
 }
 
 const initialState: DevicesState = {
@@ -24,6 +25,7 @@ const initialState: DevicesState = {
     brands: [],
     currentDevice: null,
     isFetching: false,
+    ratedDevicesID: [],
     error: ''
 }
 
@@ -63,6 +65,21 @@ export const devicesSlice = createSlice({
                     state.error = action.payload
                 })
 
+            .addCase(getRatedDevices.fulfilled,
+                (state, action: PayloadAction<{deviceId: number}[]>) => {
+                    state.isFetching = false
+                    state.ratedDevicesID = action.payload.map(el => el.deviceId)
+                    state.error = ''
+                })
+            .addCase(getRatedDevices.pending, (state) => {
+                state.isFetching = true
+            })
+            .addCase(getRatedDevices.rejected.type,
+                (state, action: PayloadAction<string>) => {
+                    state.isFetching = false
+                    state.error = action.payload
+                })
+
             .addCase(fetchOneDevice.fulfilled.type,
                 (state, action: PayloadAction<IDevice>) => {
                     state.isFetching = false
@@ -73,6 +90,34 @@ export const devicesSlice = createSlice({
                 state.isFetching = true
             })
             .addCase(fetchOneDevice.rejected.type,
+                (state, action: PayloadAction<string>) => {
+                    state.isFetching = false
+                    state.error = action.payload
+                })
+
+            .addCase(removeDevice.fulfilled.type,
+                (state) => {
+                    state.isFetching = false
+                    state.error = ''
+                })
+            .addCase(removeDevice.pending.type, (state) => {
+                state.isFetching = true
+            })
+            .addCase(removeDevice.rejected.type,
+                (state, action: PayloadAction<string>) => {
+                    state.isFetching = false
+                    state.error = action.payload
+                })
+
+            .addCase(setDeviceRating.fulfilled.type,
+                (state) => {
+                    state.isFetching = false
+                    state.error = ''
+                })
+            .addCase(setDeviceRating.pending.type, (state) => {
+                state.isFetching = true
+            })
+            .addCase(setDeviceRating.rejected.type,
                 (state, action: PayloadAction<string>) => {
                     state.isFetching = false
                     state.error = action.payload

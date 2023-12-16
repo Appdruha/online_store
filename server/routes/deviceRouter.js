@@ -7,10 +7,11 @@ const checkIsAcceptableAction = require('../middlewares/checkIsAcceptableActionM
 router.post('/', checkRoleAndAuth('ADMIN'), deviceController.create)
 router.post('/toBasket',
     checkRoleAndAuth(), checkIsAcceptableAction({type: "BASKET"}), deviceController.addDeviceToBasket)
-router.post('/:id/rating',
+router.post('/rating',
     checkRoleAndAuth(), checkIsAcceptableAction({type: "RATING"}), deviceController.setRating)
-router.put('/:id/rating',
+router.put('/rating',
     checkRoleAndAuth(), checkIsAcceptableAction({type: "RATING"}), deviceController.setRating)
+router.get('/rating', checkRoleAndAuth(), deviceController.ratedDevices)
 router.get('/', deviceController.getAll)
 router.get('/:id', deviceController.getOne)
 router.delete('/:id', checkRoleAndAuth('ADMIN'), deviceController.removeDevice)

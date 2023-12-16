@@ -1,13 +1,13 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {IRequestDeviceData} from "../../../models/IRequestData";
 import {
-    addBrandRequest, addTypeRequest, createDeviceRequest,
+    addBrandRequest, addTypeRequest, changeRatingRequest, createDeviceRequest, deleteDevice,
     getBrands,
     getDevice,
-    getDevices,
+    getDevices, getRatedDevicesRequest,
     getTypes,
     putToBasket,
-    removeFromBasket
+    removeFromBasket, setRatingRequest
 } from "../../../requestAPI/deviceAPI";
 
 export const createDevice = createAsyncThunk(
@@ -32,6 +32,17 @@ export const fetchAllDevices = createAsyncThunk(
     }
 )
 
+export const getRatedDevices = createAsyncThunk(
+    "shopPage/getRatedDevices",
+    async (_, thunkAPI) => {
+        try {
+            return await getRatedDevicesRequest()
+        } catch (e) {
+            return thunkAPI.rejectWithValue("Ошибка при загрузке")
+        }
+    }
+)
+
 export const fetchOneDevice = createAsyncThunk(
     "devicePage/fetchOneDevice",
     async (id: string, thunkAPI) => {
@@ -39,6 +50,34 @@ export const fetchOneDevice = createAsyncThunk(
             return await getDevice(id)
         } catch (e) {
             return thunkAPI.rejectWithValue("Ошибка при загрузке товара")
+        }
+    }
+)
+
+export const removeDevice = createAsyncThunk(
+    "devicePage/removeDevice",
+    async (id: string, thunkAPI) => {
+        try {
+            return await deleteDevice(id)
+        } catch (e) {
+            return thunkAPI.rejectWithValue("Ошибка при далении товара")
+        }
+    }
+)
+
+export const setDeviceRating = createAsyncThunk(
+    "devicePage/setDeviceRating",
+    async (data: { deviceId: string, rate: number, isRated: boolean },
+           thunkAPI) => {
+        try {
+            const {deviceId, rate} = data
+            if (data.isRated) {
+                return await changeRatingRequest({deviceId, rate})
+            } else {
+                return await setRatingRequest({deviceId, rate})
+            }
+        } catch (e) {
+            return thunkAPI.rejectWithValue("Ошибка при выставлении рейтинга")
         }
     }
 )

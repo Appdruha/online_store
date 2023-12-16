@@ -7,8 +7,6 @@ const ApiError = require('../errors/ApiError')
 class DeviceController {
     async create(req, res, next) {
         try {
-            console.log(req.body, "ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd")
-            console.log(req.files, "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
             let {name, price, brandId, typeId, info} = req.body
             const {img} = req.files
             let fileName = uuid.v4() + '.jpg'
@@ -98,16 +96,22 @@ class DeviceController {
     }
 
     async setRating(req, res) {
-        const {id} = req.params
-        const {userId, rate} = req.body
+        const {deviceId, rate} = req.body
+        const {id} = req.user
         let rating
         if (req.method === "PUT") {
-            rating = await Rating.update({rate}, {where: {deviceId: id, userId}})
+            rating = await Rating.update({rate}, {where: {deviceId, userId: id}})
         } else {
-            rating = await Rating.create({rate, userId, deviceId: id})
+            rating = await Rating.create({rate, userId: id, deviceId})
         }
-        await DeviceController.updateDeviceRating(id)
+        await DeviceController.updateDeviceRating(deviceId)
         return res.json(rating)
+    }
+
+    async ratedDevices(req, res) {
+        const {id} = req.user
+        const devices = await Rating.findAll({where: {userId: id}, attributes: ["deviceId"]})
+        return res.json(devices)
     }
 
     async addDeviceToBasket(req, res) {

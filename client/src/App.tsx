@@ -2,17 +2,19 @@ import React, {useEffect} from "react";
 import styles from "./app.module.css"
 import RootRouter from "./components/rootRouter";
 import Navbar from "./components/navbar/navbar";
-import {useAppDispatch} from "./hooks/redux-hooks";
+import {useAppDispatch, useAppSelector} from "./hooks/redux-hooks";
 import Header from "./components/header/header";
 import {reauthentication} from "./store/reducers/thunks/userThunks";
 import Cookies from "universal-cookie";
 import {jwtDecode} from "jwt-decode";
 import {IDecodedToken} from "./models/IAuth";
-import {fetchBrandsAndTypes} from "./store/reducers/thunks/devicesThunks";
+import {fetchBrandsAndTypes, getRatedDevices} from "./store/reducers/thunks/devicesThunks";
+import {getBasket} from "./store/reducers/thunks/basketThunks";
 
 function App() {
 
     const dispatch = useAppDispatch()
+    const {id} = useAppSelector(state => state.userReducer)
 
     const checkExpirationDate = () => {
         try {
@@ -41,7 +43,14 @@ function App() {
     useEffect(() => {
         checkExpirationDate()
         dispatch(fetchBrandsAndTypes())
+        dispatch(getRatedDevices())
     }, []);
+
+    useEffect(() => {
+        if (id) {
+            dispatch(getBasket(`${id}`))
+        }
+    }, [id]);
 
     return (
         <div className={styles.appBody}>
