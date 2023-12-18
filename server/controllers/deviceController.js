@@ -3,6 +3,7 @@ const path = require('path')
 const sequelize = require('sequelize')
 const {Device, DeviceInfo, Rating, BasketDevice} = require('../models/models')
 const ApiError = require('../errors/ApiError')
+const Op = sequelize.Op
 
 class DeviceController {
     async create(req, res, next) {
@@ -30,40 +31,68 @@ class DeviceController {
         }
     }
 
-    async getAll(req, res) {
-        let {brandId, typeId, limit, page} = req.query
-        page = page || 1
-        limit = limit || 9
-        let offset = page * limit - limit
-        let devices
-        if (!brandId && !typeId) {
-            devices = await Device.findAndCountAll({
-                attributes: {exclude: ['createdAt', 'updatedAt']},
-                limit, offset
-            })
+    async getAll(req, res, next) {
+        try {
+            let {brandId, typeId, limit, page} = req.query
+            let id
+            let basketDevices = []
+            if (req.user) {
+                id = req.user.id
+                basketDevices = await BasketDevice.findAll({
+                    where: {basketId: id},
+                    attributes: ["deviceId"]
+                })
+            }
+            page = page || 1
+            limit = limit || 9
+            let offset = page * limit - limit
+            let devices
+            const basketDevicesID = JSON.parse(JSON.stringify(basketDevices)).map(dev => dev.deviceId)
+            console.log(basketDevicesID)
+            if (!brandId && !typeId) {
+                devices = await Device.findAndCountAll({
+                    where: {
+                        id: {[Op.notIn]: basketDevicesID}
+                    },
+                    attributes: {exclude: ['createdAt', 'updatedAt']},
+                    limit, offset
+                })
+            }
+            if (brandId && !typeId) {
+                devices = await Device.findAndCountAll({
+                    where: {
+                        brandId,
+                        id: {[Op.notIn]: basketDevicesID}
+                    },
+                    attributes: {exclude: ['createdAt', 'updatedAt']},
+                    limit, offset
+                })
+            }
+            if (!brandId && typeId) {
+                devices = await Device.findAndCountAll({
+                    where: {
+                        typeId,
+                        id: {[Op.notIn]: basketDevicesID}
+                    },
+                    attributes: {exclude: ['createdAt', 'updatedAt']},
+                    limit, offset
+                })
+            }
+            if (brandId && typeId) {
+                devices = await Device.findAndCountAll({
+                    where: {
+                        brandId,
+                        typeId,
+                        id: {[Op.notIn]: basketDevicesID}
+                    },
+                    attributes: {exclude: ['createdAt', 'updatedAt']},
+                    limit, offset
+                })
+            }
+            return res.json(devices)
+        } catch {
+            return next(ApiError.badRequest('Ошибка на сервере'))
         }
-        if (brandId && !typeId) {
-            devices = await Device.findAndCountAll({
-                where: {brandId},
-                attributes: {exclude: ['createdAt', 'updatedAt']},
-                limit, offset
-            })
-        }
-        if (!brandId && typeId) {
-            devices = await Device.findAndCountAll({
-                where: {typeId},
-                attributes: {exclude: ['createdAt', 'updatedAt']},
-                limit, offset
-            })
-        }
-        if (brandId && typeId) {
-            devices = await Device.findAndCountAll({
-                where: {brandId, typeId},
-                attributes: {exclude: ['createdAt', 'updatedAt']},
-                limit, offset
-            })
-        }
-        return res.json(devices)
     }
 
     async getOne(req, res) {
@@ -130,7 +159,6 @@ class DeviceController {
     async removeDeviceFromBasket(req, res) {
         const {id} = req.params
         const userId = req.user.id
-        console.log(req.params)
         const removedDevice = await BasketDevice.destroy({where: {basketId: userId, deviceId: id}})
         return res.json(removedDevice)
     }

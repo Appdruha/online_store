@@ -1,4 +1,4 @@
-import React from "react";
+import React, {memo} from "react";
 import {IDevice} from "../../models/IDevice";
 import styles from "../shopPage/shop.module.css"
 import {useLocation, useNavigate} from "react-router-dom";
@@ -6,7 +6,7 @@ import {BASKET_ROUTE, DEVICE_ROUTE} from "../../utils/consts";
 import {useAppDispatch} from "../../hooks/redux-hooks";
 import {putDeviceToBasket, removeDeviceFromBasket} from "../../store/reducers/thunks/devicesThunks";
 
-const DeviceBox = (props: IDevice) => {
+const DeviceBox = memo((props: IDevice) => {
 
     const navigate = useNavigate()
     const location = useLocation()
@@ -47,6 +47,6 @@ const DeviceBox = (props: IDevice) => {
             }
         </div>
     )
-}
+})
 
 export default DeviceBox

@@ -20,7 +20,7 @@ function Shop() {
     const [selectedType, setSelectedType] =
         useState<IOption | null>(null)
     const [currentPage, setCurrentPage] = useState(1)
-    const [limit, setLimit] = useState<IOption>(limitOptions[0])
+    const [limit, setLimit] = useState<IOption>(limitOptions[1])
 
     const brandChangeHandler = (newValue: SingleValue<IOption>) => {
         setSelectedBrand(newValue)
