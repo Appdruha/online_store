@@ -1,13 +1,13 @@
 import React from 'react';
 import {useAppDispatch, useAppSelector} from "../../hooks/redux-hooks";
 import {useForm, FormProvider, SubmitHandler} from "react-hook-form";
-import {IBrand, IType} from "../../models/ITypesAndBrands";
 import {IOption} from "../../models/ISelectOptions";
 import ControlledSelect from "../UI/controlledSelect";
 import CreateDeviceFormInput from "../UI/createDevice.formInput";
 import CreateDeviceTextarea from "../UI/createDevice.textarea";
 import {createDevice} from "../../store/reducers/thunks/devicesThunks";
 import {arrayToOptions} from "../../utils/transformArrayToOpions";
+import {IDeviceInfo} from "../../models/IDevice";
 
 type Inputs = {
     name: string,
@@ -17,6 +17,15 @@ type Inputs = {
     img: FileList,
     brand: IOption,
     type: IOption,
+}
+
+interface ICreateDeviceData {
+    name: string;
+    price: number;
+    info: IDeviceInfo;
+    img: File;
+    brandId: number | string;
+    typeId: number | string;
 }
 
 const CreateDevice = () => {
@@ -32,8 +41,21 @@ const CreateDevice = () => {
         formState: {errors}
     } = methods
 
-    const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    // const createFormData = (obj: ICreateDeviceData): FormData => {
+    //     const formData = new FormData()
+    //     Object.entries(obj).forEach(([key, value]) => {
+    //         switch (typeof value) {
+    //             case "string" || "number":
+    //                 formData.append(key, `${value}`)
+    //                 break
+    //             case "File":
+    //
+    //         }
+    //     })
+    //     return formData
+    // }
 
+    const onSubmit: SubmitHandler<Inputs> = async (data) => {
         const typeId = data.type.value
         const brandId = data.brand.value
         const img = data.img[0]

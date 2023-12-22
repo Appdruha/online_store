@@ -27,7 +27,7 @@ class DeviceController {
 
             return res.json(device)
         } catch (e) {
-            next(ApiError.badRequest(e.message))
+            next(ApiError.badRequest("Ошибка при создании предмета"))
         }
     }
 
@@ -48,7 +48,6 @@ class DeviceController {
             let offset = page * limit - limit
             let devices
             const basketDevicesID = JSON.parse(JSON.stringify(basketDevices)).map(dev => dev.deviceId)
-            console.log(basketDevicesID)
             if (!brandId && !typeId) {
                 devices = await Device.findAndCountAll({
                     where: {
@@ -91,25 +90,29 @@ class DeviceController {
             }
             return res.json(devices)
         } catch {
-            return next(ApiError.badRequest('Ошибка на сервере'))
+            return next(ApiError.badRequest('Ошибка при получении предметов'))
         }
     }
 
-    async getOne(req, res) {
-        const {id} = req.params
-        const device = await Device.findOne(
-            {
-                where: {id},
-                include: [
-                    {
-                        model: DeviceInfo,
-                        attributes: ["title", "description"],
-                        as: "info"
-                    }
-                ]
-            }
-        )
-        return res.json(device)
+    async getOne(req, res, next) {
+        try {
+            const {id} = req.params
+            const device = await Device.findOne(
+                {
+                    where: {id},
+                    include: [
+                        {
+                            model: DeviceInfo,
+                            attributes: ["title", "description"],
+                            as: "info"
+                        }
+                    ]
+                }
+            )
+            return res.json(device)
+        } catch {
+            return next(ApiError.badRequest('Ошибка при получении предмета'))
+        }
     }
 
     static async updateDeviceRating(deviceId) {
@@ -124,43 +127,69 @@ class DeviceController {
         await Device.update({rating: avgRating}, {where: {id: deviceId}})
     }
 
-    async setRating(req, res) {
-        const {deviceId, rate} = req.body
-        const {id} = req.user
-        let rating
-        if (req.method === "PUT") {
-            rating = await Rating.update({rate}, {where: {deviceId, userId: id}})
-        } else {
-            rating = await Rating.create({rate, userId: id, deviceId})
+    async setRating(req, res, next) {
+        try {
+            const {deviceId, rate} = req.body
+            const {id} = req.user
+            let rating
+            if (req.method === "PUT") {
+                rating = await Rating.update({rate}, {where: {deviceId, userId: id}})
+            } else {
+                rating = await Rating.create({rate, userId: id, deviceId})
+            }
+            await DeviceController.updateDeviceRating(deviceId)
+            return res.json(rating)
+        } catch {
+            return next(ApiError.badRequest('Ошибка при выставлении рейтинга'))
         }
-        await DeviceController.updateDeviceRating(deviceId)
-        return res.json(rating)
     }
 
-    async ratedDevices(req, res) {
-        const {id} = req.user
-        const devices = await Rating.findAll({where: {userId: id}, attributes: ["deviceId"]})
-        return res.json(devices)
+    async ratedDevices(req, res, next) {
+        try {
+            const {id} = req.user
+            const devices = await Rating.findAll({where: {userId: id}, attributes: ["deviceId"]})
+            return res.json(devices)
+        } catch {
+            return next(ApiError.badRequest('Ошибка при получении оцененных предметов'))
+        }
     }
 
-    async addDeviceToBasket(req, res) {
-        const {deviceId} = req.body
-        const {id} = req.user
-        const basketDevice = await BasketDevice.create({deviceId, basketId: id})
-        return res.json(basketDevice)
+    async addDeviceToBasket(req, res, next) {
+        try {
+            const {deviceId} = req.body
+            const {id} = req.user
+            const basketDevice = await BasketDevice.create({deviceId, basketId: id})
+            return res.json(basketDevice)
+        } catch {
+            return next(ApiError.badRequest('Ошибка при добавлении в корзину'))
+        }
     }
 
-    async removeDevice(req, res) {
-        const {id} = req.params
-        const removedDevice = await Device.destroy({where: {id}})
-        return res.json(removedDevice)
+    async removeDevice(req, res, next) {
+        try {
+            const {id} = req.params
+            const removedDevice = await Device.destroy({where: {id}})
+            if (removedDevice === 0) {
+                return next(ApiError.badRequest('Предмет с таким ID не найден'))
+            }
+            return res.json(removedDevice)
+        } catch {
+            return next(ApiError.badRequest('Ошибка при удалении предмета'))
+        }
     }
 
-    async removeDeviceFromBasket(req, res) {
-        const {id} = req.params
-        const userId = req.user.id
-        const removedDevice = await BasketDevice.destroy({where: {basketId: userId, deviceId: id}})
-        return res.json(removedDevice)
+    async removeDeviceFromBasket(req, res, next) {
+        try {
+            const {id} = req.params
+            const userId = req.user.id
+            const removedDevice = await BasketDevice.destroy({where: {basketId: userId, deviceId: id}})
+            if (removedDevice === 0) {
+                return next(ApiError.badRequest('Предмет с таким ID не найден'))
+            }
+            return res.json(removedDevice)
+        } catch {
+            return next(ApiError.badRequest('Ошибка при удалении предмета из корзины'))
+        }
     }
 }
 

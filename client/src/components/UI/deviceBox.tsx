@@ -1,4 +1,4 @@
-import React, {memo} from "react";
+import React, {memo, useState} from "react";
 import {IDevice} from "../../models/IDevice";
 import styles from "../shopPage/shop.module.css"
 import {useLocation, useNavigate} from "react-router-dom";
@@ -12,6 +12,7 @@ const DeviceBox = memo((props: IDevice) => {
     const location = useLocation()
     const dispatch = useAppDispatch()
     const isBasket = location.pathname === BASKET_ROUTE
+    const [isDeviceInBasket, setIsDeviceInBasket] = useState(isBasket)
 
     const redirect = () => {
         navigate(DEVICE_ROUTE + `/${props.id}`)
@@ -21,8 +22,9 @@ const DeviceBox = memo((props: IDevice) => {
         dispatch(putDeviceToBasket(`${deviceId}`))
     }
 
-    const removeFromBasket = (deviceId: number) => {
-        dispatch(removeDeviceFromBasket(`${deviceId}`))
+    const removeFromBasket = async (deviceId: number) => {
+        await dispatch(removeDeviceFromBasket(`${deviceId}`))
+        setIsDeviceInBasket(!isDeviceInBasket)
     }
 
     return (
@@ -40,7 +42,7 @@ const DeviceBox = memo((props: IDevice) => {
                 <div>{props.rating}</div>
                 <div>{props.price}</div>
             </div>
-            {isBasket ?
+            {isDeviceInBasket ?
                 <button onClick={() => removeFromBasket(props.id)}>Удалить из корзины</button>
                 :
                 <button onClick={() => addToBasket(props.id)}>Добавить в корзину</button>

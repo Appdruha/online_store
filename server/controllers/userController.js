@@ -24,50 +24,56 @@ const cookieMaxAge = 60*60*24*30
 
 class UserController {
     async registration(req, res, next) {
-        const {email, password, roleKey, rememberMe} = req.body
-        if(!email || !password) {
-            return next(ApiError.badRequest('Некорректный email или пароль'))
-        }
-        const candidate = await User.findOne(({where: {email}}))
-        if (candidate) {
-            return next(ApiError.badRequest('Такой email уже зарегистрирован'))
-        }
-        let role = "USER"
-        if (roleKey === process.env.ADMIN_KEY) {
-            role = "ADMIN"
-        }
-        const hashPassword = await bcrypt.hash(password, 5)
-        const user = await User.create({email, password: hashPassword, role})
-        req.user = user
-        const basket = await Basket.create({userId: user.id})
+        try {
+            const {email, password, roleKey, rememberMe} = req.body
+            if (!email || !password) {
+                return next(ApiError.badRequest('Некорректный email или пароль'))
+            }
+            const candidate = await User.findOne(({where: {email}}))
+            if (candidate) {
+                return next(ApiError.badRequest('Такой email уже зарегистрирован'))
+            }
+            let role = "USER"
+            if (roleKey === process.env.ADMIN_KEY) {
+                role = "ADMIN"
+            }
+            const hashPassword = await bcrypt.hash(password, 5)
+            const user = await User.create({email, password: hashPassword, role})
+            req.user = user
+            const basket = await Basket.create({userId: user.id})
 
-        if (rememberMe) {
-            next(UserController.sendRefreshToken(req, res, next))
-        }
-        else {
-            const token = generateJwt(user.id, user.email, user.role)
-            return res.json({token})
+            if (rememberMe) {
+                next(UserController.sendRefreshToken(req, res, next))
+            } else {
+                const token = generateJwt(user.id, user.email, user.role)
+                return res.json({token})
+            }
+        } catch {
+            return next(ApiError.badRequest('Ошибка при регистрации'))
         }
     }
 
     async login(req, res, next) {
-        const {email, password, rememberMe} = req.body
-        const user = await User.findOne({where: {email}})
-        if (!user) {
-            return next(ApiError.internal('Пользователь не найден'))
-        }
-        let comparePassword = bcrypt.compareSync(password, user.password)
-        if (!comparePassword) {
-            return next(ApiError.internal('Неверный пароль'))
-        }
-        req.user = user
+        try {
+            const {email, password, rememberMe} = req.body
+            const user = await User.findOne({where: {email}})
+            if (!user) {
+                return next(ApiError.internal('Пользователь не найден'))
+            }
+            let comparePassword = bcrypt.compareSync(password, user.password)
+            if (!comparePassword) {
+                return next(ApiError.internal('Неверный пароль'))
+            }
+            req.user = user
 
-        if (rememberMe) {
-            next(UserController.sendRefreshToken(req, res, next))
-        }
-        else {
-            const token = generateJwt(user.id, user.email, user.role)
-            return res.json({token})
+            if (rememberMe) {
+                next(UserController.sendRefreshToken(req, res, next))
+            } else {
+                const token = generateJwt(user.id, user.email, user.role)
+                return res.json({token})
+            }
+        } catch {
+            return next(ApiError.badRequest('Ошибка при входе'))
         }
     }
 

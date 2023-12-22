@@ -128,10 +128,6 @@ export const devicesSlice = createSlice({
                     state.isFetching = false
                     state.brands = action.payload.brands
                     state.types = action.payload.types
-                    state.rows.map(row => {
-                        row.brandName = state.brands[row.brandId - 1].name
-                        row.typeName = state.brands[row.typeId - 1].name
-                    })
                 })
             .addCase(fetchBrandsAndTypes.pending, (state) => {
                 state.isFetching = true

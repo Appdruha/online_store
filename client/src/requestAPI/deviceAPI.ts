@@ -4,7 +4,7 @@ import {IDevice, IDevices} from "../models/IDevice";
 import {IBrand, IType} from "../models/ITypesAndBrands";
 
 export const createDeviceRequest = async (requestData: FormData) => {
-    await  http.post<any, FormData>("device", requestData,
+    await http.post<any, FormData>("device", requestData,
         {headers: {"Content-Type": "multipart/form-data"}})
 }
 

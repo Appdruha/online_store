@@ -2,11 +2,11 @@ import React, {useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../hooks/redux-hooks";
 import {useEffect} from "react";
 import {fetchAllDevices} from "../../store/reducers/thunks/devicesThunks";
-import DeviceBox from "../UI/deviceBox";
 import styles from "./shop.module.css";
 import Select, {OnChangeValue, SingleValue} from "react-select";
 import {arrayToOptions} from "../../utils/transformArrayToOpions";
 import {IOption} from "../../models/ISelectOptions";
+import DeviceBoxesBlock from "../UI/deviceBoxesBlock";
 
 function Shop() {
     const {rows, isFetching, error, brands, types, count}
@@ -65,21 +65,6 @@ function Shop() {
         dispatch(fetchAllDevices({page: currentPage, limit: limit.value}))
     }, []);
 
-    const deviceBoxes = rows.map(
-        row => <DeviceBox
-            key={row.id}
-            id={row.id}
-            name={row.name}
-            price={row.price}
-            rating={row.rating}
-            brandId={row.brandId}
-            typeId={row.typeId}
-            img={row.img}
-            brandName={row.brandName}
-            typeName={row.typeName}
-        />
-    )
-
     return (
         <div className={styles.container}>
             {error && <h1>{error}</h1>}
@@ -92,7 +77,7 @@ function Shop() {
                         onChange={limitChangeHandler}/>
                 <button onClick={clickHandler}>Поиск</button>
             </div>
-            {deviceBoxes}
+            <DeviceBoxesBlock rows={rows} types={types} brands={brands}/>
             <div style={{display: "flex", width: "100%", height: "fit-content"}}>
                 <button id="1"
                         onClick={(e) => changePageHandler(e)}

@@ -12,7 +12,7 @@ export interface IDevice {
     info?: IDeviceInfo[];
 }
 
-interface IDeviceInfo {
+export interface IDeviceInfo {
     title: string;
     description: string;
 }
