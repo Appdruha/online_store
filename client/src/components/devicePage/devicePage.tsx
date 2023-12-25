@@ -10,6 +10,7 @@ import {useParams} from "react-router-dom";
 import {IDevice} from "../../models/IDevice";
 import Modal from "../modals/modal";
 import SetDeviceRatingModal from "../modals/setDeviceRatingModal";
+import Preloader from "../UI/preloader";
 
 const DevicePage = () => {
 
@@ -72,7 +73,7 @@ const DevicePage = () => {
     }
 
     if (isFetching) {
-        return <h1>Loading</h1>
+        return <Preloader/>
     }
 
     if (error || currentDevice === null) {

@@ -7,8 +7,9 @@ import Select, {OnChangeValue, SingleValue} from "react-select";
 import {arrayToOptions} from "../../utils/transformArrayToOpions";
 import {IOption} from "../../models/ISelectOptions";
 import DeviceBoxesBlock from "../UI/deviceBoxesBlock";
+import Preloader from "../UI/preloader";
 
-function Shop() {
+const Shop = () => {
     const {rows, isFetching, error, brands, types, count}
         = useAppSelector(state => state.devicesReducer)
     const dispatch = useAppDispatch()
@@ -34,7 +35,7 @@ function Shop() {
         setLimit(newValue as IOption)
     }
 
-    const clickHandler = () => {
+    const setNewDevices = () => {
         dispatch(fetchAllDevices(
             {page: currentPage, limit: limit.value, typeId: selectedType?.value, brandId: selectedBrand?.value}
         ))
@@ -68,14 +69,14 @@ function Shop() {
     return (
         <div className={styles.container}>
             {error && <h1>{error}</h1>}
-            {isFetching && <h1>Loading</h1>}
+            {isFetching && <Preloader/>}
             <div style={{display: "flex", width: "100%", height: "fit-content"}}>
                 <Select options={arrayToOptions(brands)} value={selectedBrand} onChange={brandChangeHandler}/>
                 <Select options={arrayToOptions(types)} value={selectedType} onChange={typeChangeHandler}/>
                 <Select options={limitOptions}
                         value={limit}
                         onChange={limitChangeHandler}/>
-                <button onClick={clickHandler}>Поиск</button>
+                <button onClick={setNewDevices}>Поиск</button>
             </div>
             <DeviceBoxesBlock rows={rows} types={types} brands={brands}/>
             <div style={{display: "flex", width: "100%", height: "fit-content"}}>

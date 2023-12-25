@@ -5,6 +5,7 @@ import {LOGIN_ROUTE} from "../../utils/consts";
 import {getBasket} from "../../store/reducers/thunks/basketThunks";
 import styles from "./basket.module.css"
 import DeviceBoxesBlock from "../UI/deviceBoxesBlock";
+import Preloader from "../UI/preloader";
 
 const BasketPage = () => {
 
@@ -24,7 +25,7 @@ const BasketPage = () => {
     }
 
     if (isFetching) {
-        return <h1>Loading</h1>
+        return <Preloader/>
     }
 
     return (

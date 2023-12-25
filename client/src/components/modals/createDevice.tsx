@@ -41,19 +41,19 @@ const CreateDevice = () => {
         formState: {errors}
     } = methods
 
-    // const createFormData = (obj: ICreateDeviceData): FormData => {
-    //     const formData = new FormData()
-    //     Object.entries(obj).forEach(([key, value]) => {
-    //         switch (typeof value) {
-    //             case "string" || "number":
-    //                 formData.append(key, `${value}`)
-    //                 break
-    //             case "File":
-    //
-    //         }
-    //     })
-    //     return formData
-    // }
+    const createFormData = (obj: ICreateDeviceData): FormData => {
+        const formData = new FormData()
+        Object.entries(obj).forEach(([key, value]) => {
+            if (typeof value === "string" || typeof value === "number") {
+                formData.append(key, `${value}`)
+            } else if (value instanceof File) {
+                formData.append(key, value)
+            } else if ("title" in value && "description" in value && Object.keys(value).length === 2) {
+                formData.append(key, JSON.stringify(value))
+            }
+        })
+        return formData
+    }
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         const typeId = data.type.value
@@ -61,14 +61,7 @@ const CreateDevice = () => {
         const img = data.img[0]
         const {name, price, title, description} = data
         const info = {title, description}
-        const formData = new FormData()
-        formData.append("typeId", `${typeId}`)
-        formData.append("brandId", `${brandId}`)
-        formData.append("price", `${price}`)
-        formData.append("name", name)
-        formData.append("info", JSON.stringify(info))
-        formData.append("img", img)
-        dispatch(createDevice(formData))
+        dispatch(createDevice(createFormData({typeId, brandId, img, name, price, info})))
     }
 
     return (

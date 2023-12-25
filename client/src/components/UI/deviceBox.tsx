@@ -18,8 +18,9 @@ const DeviceBox = memo((props: IDevice) => {
         navigate(DEVICE_ROUTE + `/${props.id}`)
     }
 
-    const addToBasket = (deviceId: number) => {
-        dispatch(putDeviceToBasket(`${deviceId}`))
+    const addToBasket = async (deviceId: number) => {
+        await dispatch(putDeviceToBasket(`${deviceId}`))
+        setIsDeviceInBasket(!isDeviceInBasket)
     }
 
     const removeFromBasket = async (deviceId: number) => {

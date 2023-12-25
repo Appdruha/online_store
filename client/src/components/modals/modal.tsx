@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from "./modal.module.css"
 import {useAppSelector} from "../../hooks/redux-hooks";
+import Preloader from "../UI/preloader";
 
 const Modal = (props: { isActive: boolean, deactivate: () => void, children: React.ReactNode }) => {
 
@@ -8,7 +9,7 @@ const Modal = (props: { isActive: boolean, deactivate: () => void, children: Rea
         useAppSelector(state => state.devicesReducer)
 
     if (isFetching) {
-        return <h2>{isFetching}</h2>
+        return <Preloader/>
     }
 
     return (

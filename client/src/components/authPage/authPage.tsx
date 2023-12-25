@@ -4,6 +4,7 @@ import {NavLink, useLocation, useNavigate} from "react-router-dom";
 import {LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE} from "../../utils/consts";
 import {authentification} from "../../store/reducers/thunks/userThunks";
 import {useAppDispatch, useAppSelector} from "../../hooks/redux-hooks";
+import Preloader from "../UI/preloader";
 
 type Inputs = {
     email: string;
@@ -44,7 +45,7 @@ const AuthPage = () => {
     }
 
     if (isFetching) {
-        return <h1>Loading</h1>
+        return <Preloader/>
     }
 
 
