@@ -1,10 +1,10 @@
-import React, {memo, useState} from "react";
+import React, {memo, useEffect, useState} from "react";
 import {IDevice} from "../../models/IDevice";
 import styles from "../shopPage/shop.module.css"
 import {useLocation, useNavigate} from "react-router-dom";
 import {BASKET_ROUTE, DEVICE_ROUTE} from "../../utils/consts";
 import {useAppDispatch} from "../../hooks/redux-hooks";
-import {putDeviceToBasket, removeDeviceFromBasket} from "../../store/reducers/thunks/devicesThunks";
+import {fetchAllDevices, putDeviceToBasket, removeDeviceFromBasket} from "../../store/reducers/thunks/devicesThunks";
 
 const DeviceBox = memo((props: IDevice) => {
 
@@ -27,6 +27,10 @@ const DeviceBox = memo((props: IDevice) => {
         await dispatch(removeDeviceFromBasket(`${deviceId}`))
         setIsDeviceInBasket(!isDeviceInBasket)
     }
+    useEffect(() => {
+        dispatch(fetchAllDevices({page: 1, limit: 9}))
+    }, []);
+    console.log('render1')
 
     return (
         <div className={styles.deviceBox}>

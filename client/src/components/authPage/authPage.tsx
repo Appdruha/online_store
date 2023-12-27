@@ -5,6 +5,7 @@ import {LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE} from "../../utils/consts";
 import {authentification} from "../../store/reducers/thunks/userThunks";
 import {useAppDispatch, useAppSelector} from "../../hooks/redux-hooks";
 import Preloader from "../UI/preloader";
+import styles from "./auth.module.scss"
 
 type Inputs = {
     email: string;
@@ -48,63 +49,74 @@ const AuthPage = () => {
         return <Preloader/>
     }
 
-
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <div className={styles.container}>
+            <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
 
-            {isLogin ? <h2>Вход</h2> : <h2>Регистрация</h2>}
+                {isLogin ? <h2>Вход</h2> : <h2>Регистрация</h2>}
 
-            <div>
-                <input placeholder=" " {...register("email", {
-                    required: "Поле не зполнено",
-                    pattern: {value: /^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i, message: "Некорректный email"},
-                })}/>
-                {errors.email && <p>{errors.email.message}</p>}
-                {error && <p>{error}</p>}
-            </div>
-
-            <div>
-                <input type="password" placeholder=" " {...register("password", {
-                    required: "Поле не зполнено",
-                    minLength: {value: 8, message: "Минимум 8 символов"}
-                })}/>
-                {errors.password && <p>{errors.password.message}</p>}
-            </div>
-
-            {!isLogin ?
-                <>
-                    <div>
-                        <input type="password" placeholder=" " {...register("confirmPassword", {
-                            required: "Поле не зполнено",
-                            validate: (match) => {
-                                const password = getValues("password")
-                                return match === password || "Пароли не совпадают"
-                            }
-                        })}/>
-                        {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
-                    </div>
-
-                    <div>
-                        <input placeholder=" " {...register("roleKey")}/>
-                    </div>
-                </>
-                : null
-            }
-
-            {isLogin ?
-                <div>
-                    Нет аккаунта? <NavLink to={REGISTRATION_ROUTE}>Зарегисрируйтесь!</NavLink>
+                <div className={styles.inputContainer}>
+                    <input className={styles.input} placeholder=" " {...register("email", {
+                        required: "Поле не зполнено",
+                        pattern: {value: /^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i, message: "Некорректный email"},
+                    })}/>
+                    <label htmlFor="email" className={`${styles.ph1} ${styles.placeholder}`}>e-mail</label>
+                    <p>{errors?.email?.message}</p>
+                    {error && <p>{error}</p>}
                 </div>
-                :
-                <div>
-                    Есть аккаунт? <NavLink to={LOGIN_ROUTE}>Войдите!</NavLink>
+
+                <div className={styles.inputContainer}>
+                    <input className={styles.input} type="password" placeholder=" " {...register("password", {
+                        required: "Поле не зполнено",
+                        minLength: {value: 8, message: "Минимум 8 символов"}
+                    })}/>
+                    <label htmlFor="password" className={`${styles.ph2} ${styles.placeholder}`}>Пароль</label>
+                    <p>{errors?.password?.message}</p>
                 </div>
-            }
 
-            <input type="checkbox" {...register("rememberMe")}/>
+                {!isLogin ?
+                    <>
+                        <div className={styles.inputContainer}>
+                            <input className={styles.input} type="password"
+                                   placeholder=" " {...register("confirmPassword", {
+                                required: "Поле не зполнено",
+                                validate: (match) => {
+                                    const password = getValues("password")
+                                    return match === password || "Пароли не совпадают"
+                                }
+                            })}/>
+                            <label htmlFor="password" className={`${styles.ph3} ${styles.placeholder}`}>Подтвердите
+                                пароль</label>
+                            <p>{errors?.confirmPassword?.message}</p>
+                        </div>
 
-            <button type="submit">Принять</button>
-        </form>
+                        <div className={styles.inputContainer}>
+                            <input className={styles.input} placeholder=" " {...register("roleKey")}/>
+                            <label htmlFor="roleKey" className={`${styles.ph4} ${styles.placeholder}`}>Ключ
+                                администратора</label>
+                        </div>
+                    </>
+                    : null
+                }
+
+                {isLogin ?
+                    <div>
+                        Нет аккаунта? <NavLink to={REGISTRATION_ROUTE}>Зарегисрируйтесь!</NavLink>
+                    </div>
+                    :
+                    <div>
+                        Есть аккаунт? <NavLink to={LOGIN_ROUTE}>Войдите!</NavLink>
+                    </div>
+                }
+
+                <div>
+                    <input type="checkbox" {...register("rememberMe")}/>
+                    <label htmlFor="rememberMe">Запомнить меня</label>
+                </div>
+
+                <button type="submit">Принять</button>
+            </form>
+        </div>
     );
 };
 

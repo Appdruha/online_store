@@ -1,0 +1,29 @@
+.container {
+  @apply flex justify-center;
+
+  .form {
+    @apply bg-blue-50 w-96 h-fit mt-6 rounded-xl border border-blue-400 flex flex-col items-center;
+    h2 {
+      @apply w-fit text-2xl;
+    }
+
+    .inputContainer {
+      @apply block relative border border-amber-700 h-11 w-10/12 mt-1;
+      .input {
+        @apply w-full mt-4 rounded-sm indent-1 outline-0 text-base;
+        &:focus ~ .ph1,
+        &:not(:placeholder-shown) ~ .ph1,
+        &:-webkit-autofill ~ .ph1 {
+          @apply left-0 scale-75 text-gray-800
+
+        }
+      }
+
+      .placeholder {
+        @apply absolute text-base top-4 left-1 pointer-events-none transition-all;
+      }
+    }
+  }
+}
+
+
