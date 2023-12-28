@@ -1,29 +1,56 @@
 .container {
   @apply flex justify-center;
+}
 
-  .form {
-    @apply bg-blue-50 w-96 h-fit mt-6 rounded-xl border border-blue-400 flex flex-col items-center;
-    h2 {
-      @apply w-fit text-2xl;
+.form {
+  @apply bg-blue-50 w-96 h-fit mt-6 rounded-xl border border-blue-400 flex flex-col items-center;
+  h2 {
+    @apply w-fit text-2xl;
+  }
+
+  .inputContainer {
+    @apply block relative h-11 w-10/12 mt-1;
+    .input {
+      @apply w-full indent-2 outline-0 text-base h-full pt-1 border border-blue-500 rounded-md focus:border-blue-300;
+      &:focus ~ .ph,
+      &:not(:placeholder-shown) ~ .ph,
+      &:-webkit-autofill ~ .ph {
+        @apply top-0 left-2 text-xs text-gray-800 font-normal;
+      }
+    }
+    .error {
+      @apply border border-red-600 focus:border-red-600;
     }
 
-    .inputContainer {
-      @apply block relative border border-amber-700 h-11 w-10/12 mt-1;
-      .input {
-        @apply w-full mt-4 rounded-sm indent-1 outline-0 text-base;
-        &:focus ~ .ph1,
-        &:not(:placeholder-shown) ~ .ph1,
-        &:-webkit-autofill ~ .ph1 {
-          @apply left-0 scale-75 text-gray-800
-
-        }
-      }
-
-      .placeholder {
-        @apply absolute text-base top-4 left-1 pointer-events-none transition-all;
-      }
+    .placeholder {
+      @apply absolute text-base top-2 left-2 pointer-events-none transition-all;
     }
   }
+
+  .checkboxContainer {
+    @apply h-7 flex items-center mt-1;
+    label {
+      @apply text-base pb-0.75 pl-1;
+    }
+  }
+
+  .button {
+    @apply bg-blue-600 text-blue-50 text-lg border border-blue-800 rounded-md
+    hover:bg-blue-500 hover:text-white hover:border-blue-600 transition-all w-32 h-9 m-2;
+  }
+
+  .chooseFormText {
+    @apply text-sm font-normal mb-2;
+    a {
+      @apply text-blue-500 visited:text-fuchsia-700;
+    }
+  }
+
+  p {
+    @apply text-base text-red-600;
+  }
 }
+
+
 
 

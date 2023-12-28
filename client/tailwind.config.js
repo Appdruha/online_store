@@ -1,3 +1,5 @@
+import plugin from "tailwindcss/plugin";
+
 /** @type {import('tailwindcss').Config} */
 export default {
     content: [
@@ -6,11 +8,24 @@ export default {
     ],
     theme: {
         extend: {
-            top: {
-                'min0.5': '-2px'
+            inset: {
+                "4.5": "18px"
+            },
+            spacing: {
+                "0.75": "3px"
+            },
+            transitionDuration: {
+                DEFAULT: "200ms"
+            },
+            transitionTimingFunction: {
+                DEFAULT: "ease-in-out"
             }
         },
     },
-    plugins: [],
+    plugins: [
+        plugin(({addComponents, theme}) => {
+
+        })
+    ],
 }
 

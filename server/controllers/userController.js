@@ -27,11 +27,11 @@ class UserController {
         try {
             const {email, password, roleKey, rememberMe} = req.body
             if (!email || !password) {
-                return next(ApiError.badRequest('Некорректный email или пароль'))
+                return next(ApiError.forbidden('Некорректный email или пароль'))
             }
             const candidate = await User.findOne(({where: {email}}))
             if (candidate) {
-                return next(ApiError.badRequest('Такой email уже зарегистрирован'))
+                return next(ApiError.forbidden({'emailError': 'Такой email уже зарегистрирован'}))
             }
             let role = "USER"
             if (roleKey === process.env.ADMIN_KEY) {
@@ -58,11 +58,11 @@ class UserController {
             const {email, password, rememberMe} = req.body
             const user = await User.findOne({where: {email}})
             if (!user) {
-                return next(ApiError.internal('Пользователь не найден'))
+                return next(ApiError.forbidden({'emailError': 'Пользователь не найден'}))
             }
             let comparePassword = bcrypt.compareSync(password, user.password)
             if (!comparePassword) {
-                return next(ApiError.internal('Неверный пароль'))
+                return next(ApiError.badRequest({'passwordError': 'Неверный пароль'}))
             }
             req.user = user
 
