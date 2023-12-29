@@ -1,7 +1,7 @@
 import DeviceBox from "./deviceBox";
 import React from "react";
-import {IDevice} from "../../models/IDevice";
-import {IBrand, IType} from "../../models/ITypesAndBrands";
+import {IDevice} from "../../../models/IDevice";
+import {IBrand, IType} from "../../../models/ITypesAndBrands";
 
 const DeviceBoxesBlock = (props: {rows: IDevice[], brands: IBrand[], types: IType[]}) => {
     return  props.rows.map(

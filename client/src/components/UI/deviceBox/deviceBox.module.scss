@@ -1,0 +1,37 @@
+.deviceBox {
+  @apply flex flex-col w-80 m-4 h-fit bg-gray-300 border border-gray-500 border-b-0 rounded-md;
+
+  .deviceBox_header {
+    @apply grid grid-rows-cd-head w-full h-20;
+
+    .name {
+      @apply w-full text-center text-xl font-bold text-gray-800 place-self-center cursor-pointer;
+    }
+
+    :last-child {
+      @apply w-full flex justify-around;
+
+      .brand,
+      .type {
+        @apply w-fit font-bold text-gray-800 text-base;
+      }
+    }
+  }
+
+  .deviceBox_img {
+    @apply m-auto w-72 h-72 mt-4;
+  }
+
+  .deviceBox_footer {
+    @apply flex justify-around mt-4;
+
+    .info {
+      @apply w-fit font-bold text-gray-800 text-base;
+    }
+  }
+
+  .button {
+    @apply btn-primary mt-4 h-12
+  }
+}
+

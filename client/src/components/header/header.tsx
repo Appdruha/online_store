@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from "../../app.module.css"
+import styles from "./header.module.scss"
 import {useAppDispatch, useAppSelector} from "../../hooks/redux-hooks";
 import {useNavigate} from "react-router-dom";
 import {userSlice} from "../../store/reducers/UserSlice";
@@ -23,8 +23,9 @@ const Header = () => {
 
     return (
         <header className={styles.header}>
-            {isAuth ? <button onClick={() =>
-                clickHandler(isAuth)}>Выйти</button> : <button onClick={() => clickHandler(isAuth)}>Войти</button>}
+            {isAuth ? <button className={styles.button} onClick={() =>
+                    clickHandler(isAuth)}>Выйти</button> :
+                <button className={styles.button} onClick={() => clickHandler(isAuth)}>Войти</button>}
         </header>
     );
 };

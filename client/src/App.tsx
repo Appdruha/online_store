@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import styles from "./app.module.css"
+import styles from "./app.module.scss"
 import RootRouter from "./components/rootRouter";
 import Navbar from "./components/navbar/navbar";
 import {useAppDispatch, useAppSelector} from "./hooks/redux-hooks";

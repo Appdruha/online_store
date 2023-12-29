@@ -2,11 +2,11 @@ import React, {useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../hooks/redux-hooks";
 import {useEffect} from "react";
 import {fetchAllDevices} from "../../store/reducers/thunks/devicesThunks";
-import styles from "./shop.module.css";
+import styles from "./shop.module.scss";
 import Select, {OnChangeValue, SingleValue} from "react-select";
 import {arrayToOptions} from "../../utils/transformArrayToOpions";
 import {IOption} from "../../models/ISelectOptions";
-import DeviceBoxesBlock from "../UI/deviceBoxesBlock";
+import DeviceBoxesBlock from "../UI/deviceBox/deviceBoxesBlock";
 import Preloader from "../UI/preloader";
 
 const Shop = () => {
@@ -41,53 +41,33 @@ const Shop = () => {
         ))
     }
 
-    const changePageHandler = (e: React.MouseEvent<HTMLElement>) => {
-        if (e.currentTarget.id === "1") {
-            setCurrentPage(currentPage - 1)
-            dispatch(fetchAllDevices(
-                {
-                    page: currentPage - 1, limit: limit.value,
-                    typeId: selectedType?.value, brandId: selectedBrand?.value
-                }
-            ))
-        }
-        if (e.currentTarget.id === "2") {
-            setCurrentPage(currentPage + 1)
-            dispatch(fetchAllDevices(
-                {
-                    page: currentPage + 1, limit: limit.value,
-                    typeId: selectedType?.value, brandId: selectedBrand?.value
-                }
-            ))
-        }
-    }
-
     useEffect(() => {
-        dispatch(fetchAllDevices({page: currentPage, limit: limit.value}))
-    }, []);
+        dispatch(fetchAllDevices(
+            {page: currentPage, limit: limit.value, typeId: selectedType?.value, brandId: selectedBrand?.value}))
+    }, [currentPage]);
 
     return (
         <div className={styles.container}>
             {error && <h1>{error}</h1>}
             {isFetching && <Preloader/>}
-            <div style={{display: "flex", width: "100%", height: "fit-content"}}>
-                <Select options={arrayToOptions(brands)} value={selectedBrand} onChange={brandChangeHandler}/>
-                <Select options={arrayToOptions(types)} value={selectedType} onChange={typeChangeHandler}/>
-                <Select options={limitOptions}
+            <div className={styles.selectBox}>
+                <Select className={styles.select} options={arrayToOptions(brands)} value={selectedBrand}
+                        onChange={brandChangeHandler}/>
+                <Select className={styles.select} options={arrayToOptions(types)} value={selectedType}
+                        onChange={typeChangeHandler}/>
+                <Select className={styles.select} options={limitOptions}
                         value={limit}
                         onChange={limitChangeHandler}/>
-                <button onClick={setNewDevices}>Поиск</button>
+                <button className={styles.selectButton} onClick={setNewDevices}>Поиск</button>
             </div>
             <DeviceBoxesBlock rows={rows} types={types} brands={brands}/>
-            <div style={{display: "flex", width: "100%", height: "fit-content"}}>
-                <button id="1"
-                        onClick={(e) => changePageHandler(e)}
-                        style={currentPage === 1 ? {display: "none"} : {display: "block"}}>
+            <div className={styles.paginationBox}>
+                <button onClick={() => setCurrentPage(currentPage - 1)}
+                        className={currentPage === 1 ? "hidden" : styles.paginationButton}>
                     Назад
                 </button>
-                <button id="2"
-                        onClick={(e) => changePageHandler(e)}
-                        style={count / limit.value >= currentPage ? {display: "block"} : {display: "none"}}>
+                <button onClick={() => setCurrentPage(currentPage + 1)}
+                        className={count / limit.value >= currentPage ? styles.paginationButton : "hidden"}>
                     Далее
                 </button>
             </div>

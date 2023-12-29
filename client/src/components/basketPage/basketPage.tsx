@@ -4,7 +4,7 @@ import {NavLink} from "react-router-dom";
 import {LOGIN_ROUTE} from "../../utils/consts";
 import {getBasket} from "../../store/reducers/thunks/basketThunks";
 import styles from "./basket.module.css"
-import DeviceBoxesBlock from "../UI/deviceBoxesBlock";
+import DeviceBoxesBlock from "../UI/deviceBox/deviceBoxesBlock";
 import Preloader from "../UI/preloader";
 
 const BasketPage = () => {
@@ -24,18 +24,17 @@ const BasketPage = () => {
         return <div>Чтобы просматривать корзину нужно <NavLink to={LOGIN_ROUTE}>авторизироваться</NavLink></div>
     }
 
-    if (isFetching) {
-        return <Preloader/>
-    }
-
     return (
-        <div className={styles.container}>
-            {
-                rows.length === 0 ? <h1>Корзина пуста</h1>
-                :
-                <DeviceBoxesBlock rows={rows} types={types} brands={brands}/>
-            }
-        </div>
+        <>
+            {isFetching && <Preloader/>}
+            <div className={styles.container}>
+                {
+                    rows.length === 0 ? <h1>Корзина пуста</h1>
+                        :
+                        <DeviceBoxesBlock rows={rows} types={types} brands={brands}/>
+                }
+            </div>
+        </>
     );
 };
 

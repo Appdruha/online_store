@@ -1,0 +1,7 @@
+.header {
+  @apply flex h-16 w-full bg-gray-300 justify-end;
+
+  .button {
+    @apply btn-primary h-9 w-20 text-base place-self-center mr-6;
+  }
+}

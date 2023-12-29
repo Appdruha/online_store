@@ -3,10 +3,11 @@ import CreateTypeOrBrand from "../modals/createTypeOrBrand";
 import Modal from "../modals/modal";
 import {useAppSelector} from "../../hooks/redux-hooks";
 import CreateDevice from "../modals/createDevice";
+import Preloader from "../UI/preloader";
 
 const AdminPage = () => {
 
-    const {role} = useAppSelector(state => state.userReducer)
+    const {role, isFetching} = useAppSelector(state => state.userReducer)
     const [isBrandModalActive, setIsBrandModalActive] = useState(false)
     const [isTypeModalActive, setIsTypeModalActive] = useState(false)
     const [isDeviceModalActive, setIsDeviceModalActive] = useState(false)
@@ -32,35 +33,38 @@ const AdminPage = () => {
     }
 
     return (
-        <div>
-            <button id="1"
-                    onClick={(e) => {
-                        activateModal(e)
-                    }}>Создать брэнд
-            </button>
-            <br/>
-            <button id="2"
-                    onClick={(e) => {
-                        activateModal(e)
-                    }}>Создать тип
-            </button>
-            <br/>
-            <button id="3"
-                    onClick={(e) => {
-                        activateModal(e)
-                    }}>Создать девайс
-            </button>
+        <>
+            {isFetching && <Preloader/>}
+            <div>
+                <button id="1"
+                        onClick={(e) => {
+                            activateModal(e)
+                        }}>Создать брэнд
+                </button>
+                <br/>
+                <button id="2"
+                        onClick={(e) => {
+                            activateModal(e)
+                        }}>Создать тип
+                </button>
+                <br/>
+                <button id="3"
+                        onClick={(e) => {
+                            activateModal(e)
+                        }}>Создать девайс
+                </button>
 
-            <Modal isActive={isBrandModalActive}
-                   deactivate={deactivateModals}
-                   children={<CreateTypeOrBrand isBrandModal={true}/>}/>
-            <Modal isActive={isTypeModalActive}
-                   deactivate={deactivateModals}
-                   children={<CreateTypeOrBrand isBrandModal={false}/>}/>
-            <Modal isActive={isDeviceModalActive}
-                   deactivate={deactivateModals}
-                   children={<CreateDevice/>}/>
-        </div>
+                <Modal isActive={isBrandModalActive}
+                       deactivate={deactivateModals}
+                       children={<CreateTypeOrBrand isBrandModal={true}/>}/>
+                <Modal isActive={isTypeModalActive}
+                       deactivate={deactivateModals}
+                       children={<CreateTypeOrBrand isBrandModal={false}/>}/>
+                <Modal isActive={isDeviceModalActive}
+                       deactivate={deactivateModals}
+                       children={<CreateDevice/>}/>
+            </div>
+        </>
     );
 };
 

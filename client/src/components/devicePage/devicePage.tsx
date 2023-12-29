@@ -72,15 +72,13 @@ const DevicePage = () => {
         return value
     }
 
-    if (isFetching) {
-        return <Preloader/>
-    }
-
     if (error || currentDevice === null) {
         return <h1>{error}</h1>
     }
 
     return (
+        <>
+            {isFetching && <Preloader/>}
             <div>
                 <div>{currentDevice.name}</div>
                 <div>{currentDevice.brandName}</div>
@@ -112,6 +110,7 @@ const DevicePage = () => {
                        deactivate={toggleIsRatingModalActive}
                        children={<SetDeviceRatingModal isRated={checkIsRated()}/>}/>
             </div>
+        </>
     );
 };
 

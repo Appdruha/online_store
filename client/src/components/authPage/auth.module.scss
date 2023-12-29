@@ -18,6 +18,7 @@
         @apply top-0 left-2 text-xs text-gray-800 font-normal;
       }
     }
+
     .error {
       @apply border border-red-600 focus:border-red-600;
     }
@@ -35,8 +36,7 @@
   }
 
   .button {
-    @apply bg-blue-600 text-blue-50 text-lg border border-blue-800 rounded-md
-    hover:bg-blue-500 hover:text-white hover:border-blue-600 transition-all w-32 h-9 m-2;
+    @apply btn-primary w-32 h-9 m-2;
   }
 
   .chooseFormText {

@@ -1,0 +1,23 @@
+.menu {
+  @apply flex justify-center;
+
+  ol {
+    @apply flex w-full;
+
+    :first-child {
+      @apply border-l-0;
+    }
+
+    :last-child {
+      @apply border-r-0;
+    }
+  }
+
+  li {
+    @apply flex border-2 border-t-0 border-l-0 border-gray-300 h-10 justify-center items-center;
+
+    a {
+      @apply block w-fit text-base text-gray-600 font-bold;
+    }
+  }
+}
