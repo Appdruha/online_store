@@ -1,0 +1,45 @@
+.modal {
+  @apply min-h-100 w-100 bg-modal fixed left-0 top-0 flex justify-center items-center opacity-0 pointer-events-none;
+
+  .modal_content {
+    @apply w-96 min-h-96 bg-blue-50 border border-blue-500 rounded-lg flex items-center flex-col relative;
+
+    .modal_closeBtn {
+      @apply btn-primary absolute bottom-4 text-base w-20 h-8;
+    }
+  }
+}
+
+.active {
+  @apply opacity-100 pointer-events-auto;
+}
+
+.form {
+  @apply w-full h-fit flex items-center flex-col;
+
+  .submitButton {
+    @apply btn-primary text-base w-20 h-8 mt-4 mb-16;
+  }
+
+  p {
+    @apply text-base text-red-600;
+  }
+}
+
+.header {
+  @apply w-fit m-auto mt-4 big-font;
+}
+
+.input {
+  @apply w-10/12 mt-4 outline-0 border border-blue-500 rounded-md h-7 indent-1 small-font font-normal focus:border-blue-300;
+}
+
+.textarea {
+  @apply resize-none break-all min-h-14
+}
+
+.inputError {
+  @apply border border-red-600 focus:border-red-600;
+}
+
+

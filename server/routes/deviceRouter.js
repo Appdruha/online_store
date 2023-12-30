@@ -12,7 +12,7 @@ router.post('/rating',
     checkRoleAndAuth(), checkIsAcceptableAction({type: "RATING"}), deviceController.setRating)
 router.put('/rating',
     checkRoleAndAuth(), checkIsAcceptableAction({type: "RATING"}), deviceController.setRating)
-router.get('/rating', checkRoleAndAuth(), deviceController.ratedDevices)
+router.get('/isRated', checkRoleAndAuth(), deviceController.getIsDeviceRated)
 router.get('/', decodeToken(), deviceController.getAll)
 router.get('/:id', deviceController.getOne)
 router.delete('/:id', checkRoleAndAuth('ADMIN'), deviceController.removeDevice)

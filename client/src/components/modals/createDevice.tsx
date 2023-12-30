@@ -8,6 +8,7 @@ import CreateDeviceTextarea from "../UI/createDevice.textarea";
 import {createDevice} from "../../store/reducers/thunks/devicesThunks";
 import {arrayToOptions} from "../../utils/transformArrayToOpions";
 import {IDeviceInfo} from "../../models/IDevice";
+import styles from "./modal.module.scss"
 
 type Inputs = {
     name: string,
@@ -66,31 +67,31 @@ const CreateDevice = () => {
 
     return (
         <FormProvider {...methods}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <h2>Создать девайс</h2>
+            <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+                <h2 className={styles.header}>Создать девайс</h2>
 
-                <CreateDeviceFormInput name={"name"} label={"Название"} type={"text"}/>
+                <CreateDeviceFormInput name={"name"} label={"Название"} type={"text"} error={errors.name}/>
                 <p>{errors.name?.message}</p>
 
-                <ControlledSelect name={"brand"} options={arrayToOptions(brands)}/>
+                <ControlledSelect name={"brand"} options={arrayToOptions(brands)} error={errors.brand}/>
                 <p>{errors.brand?.message}</p>
 
-                <ControlledSelect name={"type"} options={arrayToOptions(types)}/>
+                <ControlledSelect name={"type"} options={arrayToOptions(types)} error={errors.type}/>
                 <p>{errors.type?.message}</p>
 
-                <CreateDeviceFormInput name={"price"} label={"Цена"} type={"number"}/>
+                <CreateDeviceFormInput name={"price"} label={"Цена"} type={"number"} error={errors.price}/>
                 <p>{errors.price?.message}</p>
 
-                <CreateDeviceFormInput name={"img"} label={"Изображение"} type={"file"}/>
+                <CreateDeviceFormInput name={"img"} label={"Изображение"} type={"file"} error={errors.img}/>
                 <p>{errors.price?.message}</p>
 
-                <CreateDeviceTextarea name={"title"} label={"Заголовок"}/>
+                <CreateDeviceTextarea name={"title"} label={"Заголовок"} error={errors.title}/>
                 <p>{errors.title?.message}</p>
 
-                <CreateDeviceTextarea name={"description"} label={"Описание"}/>
+                <CreateDeviceTextarea name={"description"} label={"Описание"} error={errors.description}/>
                 <p>{errors.description?.message}</p>
 
-                <button type="submit">Создать</button>
+                <button className={styles.submitButton} type="submit">Создать</button>
             </form>
         </FormProvider>
     );

@@ -3,9 +3,9 @@ import {IDevice} from "../../../models/IDevice";
 import styles from "./deviceBox.module.scss"
 import {useLocation, useNavigate} from "react-router-dom";
 import {BASKET_ROUTE, DEVICE_ROUTE} from "../../../utils/consts";
-import {useAppDispatch} from "../../../hooks/redux-hooks";
+import {useAppDispatch, useAppSelector} from "../../../hooks/redux-hooks";
 import {putDeviceToBasket, removeDeviceFromBasket} from "../../../store/reducers/thunks/devicesThunks";
-import icon from "../../../assets/electronics.png"
+import {getImg, imageOnErrorHandler} from "../../../utils/imageCallbacks";
 
 const DeviceBox = memo((props: IDevice) => {
 
@@ -13,19 +13,13 @@ const DeviceBox = memo((props: IDevice) => {
     const location = useLocation()
     const dispatch = useAppDispatch()
     const isBasket = location.pathname === BASKET_ROUTE
+    const {isFetching} = useAppSelector(state => state.devicesReducer)
     const [isDeviceInBasket, setIsDeviceInBasket] = useState(isBasket)
 
     const redirect = () => {
         navigate(DEVICE_ROUTE + `/${props.id}`)
     }
 
-    const getImg = () => {
-        return import.meta.env.VITE_REACT_APP_API_URL + props.img
-    }
-
-    const imageOnErrorHandler = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
-        event.currentTarget.src = icon;
-    };
     const addToBasket = async (deviceId: number) => {
         await dispatch(putDeviceToBasket(`${deviceId}`))
         setIsDeviceInBasket(!isDeviceInBasket)
@@ -46,7 +40,7 @@ const DeviceBox = memo((props: IDevice) => {
                 </div>
             </div>
             <div className={styles.deviceBox_img}>
-                <img onError={imageOnErrorHandler} className="w-full h-full" src={getImg()}
+                <img onError={imageOnErrorHandler} className="w-full h-full" src={getImg(props.img)}
                      alt="#"/>
             </div>
             <div className={styles.deviceBox_footer}>
@@ -54,9 +48,11 @@ const DeviceBox = memo((props: IDevice) => {
                 <div className={styles.info}>{props.price}$</div>
             </div>
             {isDeviceInBasket ?
-                <button className={styles.button} onClick={() => removeFromBasket(props.id)}>Удалить из корзины</button>
+                <button disabled={isFetching} className={styles.button}
+                        onClick={() => removeFromBasket(props.id)}>Удалить из корзины</button>
                 :
-                <button className={styles.button} onClick={() => addToBasket(props.id)}>Добавить в корзину</button>
+                <button disabled={isFetching} className={styles.button} onClick={() => addToBasket(props.id)}>Добавить в
+                    корзину</button>
             }
         </div>
     )

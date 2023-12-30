@@ -100,6 +100,7 @@ class DeviceController {
             const device = await Device.findOne(
                 {
                     where: {id},
+                    attributes: {exclude: ['createdAt', 'updatedAt']},
                     include: [
                         {
                             model: DeviceInfo,
@@ -144,11 +145,16 @@ class DeviceController {
         }
     }
 
-    async ratedDevices(req, res, next) {
+    async getIsDeviceRated(req, res, next) {
         try {
             const {id} = req.user
-            const devices = await Rating.findAll({where: {userId: id}, attributes: ["deviceId"]})
-            return res.json(devices)
+            const {deviceId} = req.query
+            const device = await Rating.findOne({where: {userId: id, deviceId}})
+            if (device) {
+                return res.json({message: true})
+            } else {
+                return res.json({message: false})
+            }
         } catch {
             return next(ApiError.badRequest('Ошибка при получении оцененных предметов'))
         }

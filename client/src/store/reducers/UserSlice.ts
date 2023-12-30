@@ -6,7 +6,7 @@ import {IDecodedToken} from "../../models/IAuth";
 interface IUserState extends IUser {
     isFetching: boolean;
     error: string;
-    errorType: string;
+    authErrorType: string;
 }
 
 interface AuthError {

@@ -8,6 +8,7 @@ import {arrayToOptions} from "../../utils/transformArrayToOpions";
 import {IOption} from "../../models/ISelectOptions";
 import DeviceBoxesBlock from "../UI/deviceBox/deviceBoxesBlock";
 import Preloader from "../UI/preloader";
+import NavButtons from "../UI/navButtons/navButtons";
 
 const Shop = () => {
     const {rows, isFetching, error, brands, types, count}
@@ -58,19 +59,10 @@ const Shop = () => {
                 <Select className={styles.select} options={limitOptions}
                         value={limit}
                         onChange={limitChangeHandler}/>
-                <button className={styles.selectButton} onClick={setNewDevices}>Поиск</button>
+                <button disabled={isFetching} className={styles.selectButton} onClick={setNewDevices}>Поиск</button>
             </div>
             <DeviceBoxesBlock rows={rows} types={types} brands={brands}/>
-            <div className={styles.paginationBox}>
-                <button onClick={() => setCurrentPage(currentPage - 1)}
-                        className={currentPage === 1 ? "hidden" : styles.paginationButton}>
-                    Назад
-                </button>
-                <button onClick={() => setCurrentPage(currentPage + 1)}
-                        className={count / limit.value >= currentPage ? styles.paginationButton : "hidden"}>
-                    Далее
-                </button>
-            </div>
+            <NavButtons count={count} limit={limit.value} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
         </div>
     );
 }

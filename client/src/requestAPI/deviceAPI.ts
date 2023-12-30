@@ -1,5 +1,5 @@
 import {http} from "./index";
-import {IRequestDeviceData} from "../models/IRequestData";
+import {IBoolRequestData, IRequestDeviceData} from "../models/IRequestData";
 import {IDevice, IDevices} from "../models/IDevice";
 import {IBrand, IType} from "../models/ITypesAndBrands";
 
@@ -52,8 +52,8 @@ export const setRatingRequest = async (data: {deviceId: string, rate: number}) =
     await http.post<any, {rate: number, deviceId: string}>(`device/rating`, {...data})
 }
 
-export const getRatedDevicesRequest = async () => {
-    const {data} = await http.get<{deviceId: number}[]>(`device/rating`)
+export const getIsDeviceRatedRequest = async (deviceId: number) => {
+    const {data} = await http.get<IBoolRequestData>(`device/isRated`, {params: {deviceId}})
     return data
 }
 

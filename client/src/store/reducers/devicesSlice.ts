@@ -5,9 +5,15 @@ import {
     fetchAllDevices,
     fetchOneDevice,
     putDeviceToBasket,
-    removeDeviceFromBasket, addTypeOrBrand, createDevice, removeDevice, setDeviceRating, getRatedDevices
+    removeDeviceFromBasket,
+    addTypeOrBrand,
+    createDevice,
+    removeDevice,
+    setDeviceRating,
+    getIsDeviceRated
 } from "./thunks/devicesThunks";
 import {IBrand, IType, ITypesAndBrands} from "../../models/ITypesAndBrands";
+import {IBoolRequestData} from "../../models/IRequestData";
 
 interface DevicesState extends IDevices {
     types: IType[];
@@ -15,7 +21,7 @@ interface DevicesState extends IDevices {
     currentDevice: null | IDevice;
     isFetching: boolean;
     error: string;
-    ratedDevicesID: number[];
+    isRated: boolean
 }
 
 const initialState: DevicesState = {
@@ -25,7 +31,7 @@ const initialState: DevicesState = {
     brands: [],
     currentDevice: null,
     isFetching: false,
-    ratedDevicesID: [],
+    isRated: false,
     error: ''
 }
 
@@ -65,16 +71,16 @@ export const devicesSlice = createSlice({
                     state.error = action.payload
                 })
 
-            .addCase(getRatedDevices.fulfilled,
-                (state, action: PayloadAction<{deviceId: number}[]>) => {
+            .addCase(getIsDeviceRated.fulfilled.type,
+                (state, action: PayloadAction<IBoolRequestData>) => {
                     state.isFetching = false
-                    state.ratedDevicesID = action.payload.map(el => el.deviceId)
+                    state.isRated = action.payload.message
                     state.error = ''
                 })
-            .addCase(getRatedDevices.pending, (state) => {
+            .addCase(getIsDeviceRated.pending, (state) => {
                 state.isFetching = true
             })
-            .addCase(getRatedDevices.rejected.type,
+            .addCase(getIsDeviceRated.rejected.type,
                 (state, action: PayloadAction<string>) => {
                     state.isFetching = false
                     state.error = action.payload

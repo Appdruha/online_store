@@ -1,0 +1,51 @@
+.container {
+  @apply w-11/12 m-auto;
+
+  .header {
+    @apply w-full text-center h-fit text-2xl font-bold text-gray-800 mt-4 mb-4;
+  }
+
+  .main {
+    @apply w-full h-fit flex mt-4;
+
+    .main_left {
+      @apply ml-12 w-1/2;
+
+      img {
+        @apply w-full block border border-blue-600 rounded-lg;
+      }
+
+      .main_left_rating {
+        @apply flex mt-4 small-font;
+      }
+    }
+
+    .main_right {
+      @apply ml-8 w-2/5;
+    }
+  }
+
+  .footer {
+    @apply flex justify-between w-11/12 m-auto mt-4 mb-4;
+
+    button {
+      @apply btn-primary w-40 h-16;
+    }
+  }
+}
+
+.descriptionBox {
+  @apply border border-blue-600 rounded-md mt-6 w-full h-fit;
+
+  .descriptionBox_title {
+    @apply text-center text-lg font-bold mt-1;
+  }
+
+  .descriptionBox_description {
+    @apply small-font break-all p-2;
+  }
+}
+
+.ratingBtn {
+  @apply btn-primary text-sm w-36 ml-6;
+}

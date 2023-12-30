@@ -12,22 +12,6 @@
       @apply ml-2 btn-primary w-20 text-base;
     }
   }
-
-  .paginationBox {
-    @apply block w-full h-fit;
-
-    :first-child {
-      @apply float-left ml-20;
-    }
-
-    :last-child {
-      @apply float-right mr-20;
-    }
-
-    .paginationButton {
-      @apply btn-primary w-24 h-11 text-lg mt-4 mb-4;
-    }
-  }
 }
 
 

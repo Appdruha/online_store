@@ -3,6 +3,7 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import {useAppDispatch, useAppSelector} from "../../hooks/redux-hooks";
 import {IBrand, IType} from "../../models/ITypesAndBrands";
 import {addTypeOrBrand} from "../../store/reducers/thunks/devicesThunks";
+import styles from "./modal.module.scss"
 
 type Input = { value: string }
 
@@ -32,11 +33,10 @@ const CreateTypeOrBrand = (props: { isBrandModal: boolean }) => {
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <h2>{`Создать ${props.isBrandModal ? "Брэнд" : "Тип"}`}</h2>
+        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+            <h2 className={styles.header}>{`Создать ${props.isBrandModal ? "Брэнд" : "Тип"}`}</h2>
 
-            <div>
-                <input type="text" placeholder=" " {...register("value", {
+                <input className={styles.input} type="text" placeholder=" " {...register("value", {
                     required: "Поле не заполнено",
                     validate: (match) => {
                         if (props.isBrandModal) {
@@ -47,9 +47,8 @@ const CreateTypeOrBrand = (props: { isBrandModal: boolean }) => {
                     }
                 })}/>
                 {errors.value && <p>{errors.value.message}</p>}
-            </div>
 
-            <button type="submit">Создать</button>
+            <button className={styles.submitButton} type="submit">Создать</button>
         </form>
     );
 };

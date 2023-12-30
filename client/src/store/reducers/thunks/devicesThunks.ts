@@ -4,7 +4,7 @@ import {
     addBrandRequest, addTypeRequest, changeRatingRequest, createDeviceRequest, deleteDevice,
     getBrands,
     getDevice,
-    getDevices, getRatedDevicesRequest,
+    getDevices, getIsDeviceRatedRequest,
     getTypes,
     putToBasket,
     removeFromBasket, setRatingRequest
@@ -32,11 +32,11 @@ export const fetchAllDevices = createAsyncThunk(
     }
 )
 
-export const getRatedDevices = createAsyncThunk(
-    "shopPage/getRatedDevices",
-    async (_, thunkAPI) => {
+export const getIsDeviceRated = createAsyncThunk(
+    "shopPage/getIsDeviceRated",
+    async (deviceId: number, thunkAPI) => {
         try {
-            return await getRatedDevicesRequest()
+            return await getIsDeviceRatedRequest(deviceId)
         } catch (e) {
             return thunkAPI.rejectWithValue("Ошибка при загрузке")
         }

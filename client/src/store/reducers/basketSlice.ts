@@ -1,11 +1,13 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {IDevices} from "../../models/IDevice";
-import {getBasket} from "./thunks/basketThunks";
+import {getBasket, getIsInBasket} from "./thunks/basketThunks";
+import {IBoolRequestData} from "../../models/IRequestData";
 
 interface IBasketState extends IDevices {
     basketId: number | undefined;
     isFetching: boolean;
     error: string;
+    isInBasket: boolean;
 }
 
 const initialState: IBasketState = {
@@ -13,6 +15,7 @@ const initialState: IBasketState = {
     rows: [],
     count: 0,
     isFetching: false,
+    isInBasket: false,
     error: ""
 }
 
@@ -32,6 +35,20 @@ export const basketSlice = createSlice({
                 state.isFetching = true
             })
             .addCase(getBasket.rejected.type,
+                (state, action: PayloadAction<string>) => {
+                    state.isFetching = false
+                    state.error = action.payload
+                })
+
+            .addCase(getIsInBasket.fulfilled.type,
+                (state, action: PayloadAction<IBoolRequestData>) => {
+                    state.isFetching = false
+                    state.isInBasket = action.payload.message
+                })
+            .addCase(getIsInBasket.pending, (state) => {
+                state.isFetching = true
+            })
+            .addCase(getIsInBasket.rejected.type,
                 (state, action: PayloadAction<string>) => {
                     state.isFetching = false
                     state.error = action.payload

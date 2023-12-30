@@ -20,9 +20,20 @@ export default {
             },
             width: {
                 "300": "1200px",
+                "110": "440px",
+                "100": "100vw"
+            },
+            height: {
+                "110": "440px"
+            },
+            minHeight: {
+                "100": "100vh"
             },
             gridTemplateRows: {
                 "cd-head": "3fr 2fr"
+            },
+            backgroundColor: {
+                modal: "rgba(0,0,0,0.4)"
             }
         },
     },
@@ -48,6 +59,28 @@ export default {
                         backgroundColor: theme("colors.blue.500"),
                         borderColor: theme("colors.blue.600"),
                     }
+                }
+            })
+        }),
+
+        plugin(({addComponents, theme}) => {
+            addComponents({
+                ".small-font": {
+                    color: theme("colors.grey.800"),
+                    fontWeight: "700",
+                    fontSize: "16px",
+                    lineHeight: "24px"
+                }
+            })
+        }),
+
+        plugin(({addComponents, theme}) => {
+            addComponents({
+                ".big-font": {
+                    color: theme("colors.grey.800"),
+                    fontWeight: "700",
+                    fontSize: "20px",
+                    lineHeight: "28px"
                 }
             })
         })

@@ -3,4 +3,9 @@ export interface IRequestDeviceData {
     limit: number;
     brandId?: number;
     typeId?: number;
+    basketId?: number;
+}
+
+export interface IBoolRequestData {
+    message: boolean;
 }
