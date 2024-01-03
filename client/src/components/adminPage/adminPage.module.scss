@@ -1,0 +1,7 @@
+.container {
+  @apply w-full h-fit flex flex-col justify-between items-center mt-8;
+
+  .adminBtn {
+    @apply btn-primary w-52 h-14 mt-4;
+  }
+}

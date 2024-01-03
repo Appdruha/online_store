@@ -31,11 +31,16 @@
 }
 
 .input {
-  @apply w-10/12 mt-4 outline-0 border border-blue-500 rounded-md h-7 indent-1 small-font font-normal focus:border-blue-300;
+  @apply w-10/12 mt-4 outline-0 bg-white border border-blue-500 rounded-md h-7 indent-1 small-font font-normal
+  focus:border-blue-300;
+}
+
+.fileLabel {
+  @apply btn-primary flex text-base mt-4 cursor-pointer;
 }
 
 .textarea {
-  @apply resize-none break-all min-h-14
+  @apply resize-none break-all min-h-14;
 }
 
 .inputError {

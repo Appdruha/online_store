@@ -4,6 +4,7 @@ import Modal from "../modals/modal";
 import {useAppSelector} from "../../hooks/redux-hooks";
 import CreateDevice from "../modals/createDevice";
 import Preloader from "../UI/preloader";
+import styles from "./adminPage.module.scss"
 
 const AdminPage = () => {
 
@@ -35,20 +36,18 @@ const AdminPage = () => {
     return (
         <>
             {isFetching && <Preloader/>}
-            <div>
-                <button id="1"
+            <div className={styles.container}>
+                <button id="1" className={styles.adminBtn}
                         onClick={(e) => {
                             activateModal(e)
                         }}>Создать брэнд
                 </button>
-                <br/>
-                <button id="2"
+                <button id="2" className={styles.adminBtn}
                         onClick={(e) => {
                             activateModal(e)
                         }}>Создать тип
                 </button>
-                <br/>
-                <button id="3"
+                <button id="3" className={styles.adminBtn}
                         onClick={(e) => {
                             activateModal(e)
                         }}>Создать девайс

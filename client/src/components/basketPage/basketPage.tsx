@@ -22,7 +22,8 @@ const BasketPage = () => {
     }, [id, currentPage]);
 
     if (!isAuth || error) {
-        return <div>Чтобы просматривать корзину нужно <NavLink to={LOGIN_ROUTE}>авторизироваться</NavLink></div>
+        return <div className="small-font mt-20">Чтобы просматривать корзину нужно <NavLink
+            to={LOGIN_ROUTE}>авторизироваться</NavLink></div>
     }
 
     return (
@@ -30,7 +31,7 @@ const BasketPage = () => {
             {isFetching && <Preloader/>}
             <div className="flex flex-wrap justify-center">
                 {
-                    rows.length === 0 ? <h1>Корзина пуста</h1>
+                    rows.length === 0 ? <h2 className="big-font mt-20">Корзина пуста</h2>
                         :
                         <>
                             <DeviceBoxesBlock rows={rows} types={types} brands={brands}/>

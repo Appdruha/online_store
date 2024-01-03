@@ -36,7 +36,7 @@ const CreateTypeOrBrand = (props: { isBrandModal: boolean }) => {
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
             <h2 className={styles.header}>{`Создать ${props.isBrandModal ? "Брэнд" : "Тип"}`}</h2>
 
-                <input className={styles.input} type="text" placeholder=" " {...register("value", {
+                <input className={styles.input} type="text" placeholder="Название" {...register("value", {
                     required: "Поле не заполнено",
                     validate: (match) => {
                         if (props.isBrandModal) {

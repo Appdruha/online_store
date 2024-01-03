@@ -1,5 +1,4 @@
 import plugin from "tailwindcss/plugin";
-import colors from "tailwindcss/colors.js";
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -87,5 +86,3 @@ export default {
     ],
 }
 
-// bg-blue-600 text-blue-50 text-lg border border-blue-800 rounded-md
-// hover:bg-blue-500 hover:text-white hover:border-blue-600 transition-all w-32 h-9 m-2
