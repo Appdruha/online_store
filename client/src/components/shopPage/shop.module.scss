@@ -1,15 +1,15 @@
 .container {
-  @apply flex flex-wrap justify-center;
+  @apply flex flex-wrap justify-center w-full;
 
   .selectBox {
-    @apply h-fit w-full flex justify-center mt-3;
+    @apply h-fit w-full flex justify-center mt-3 mobile:flex-col mobile:items-center;
 
     .select {
-      @apply ml-2 min-w-40;
+      @apply ml-2 min-w-40 mobile:m-0 mobile:mt-2;
     }
 
     .selectButton {
-      @apply ml-2 btn-primary w-20 text-base;
+      @apply ml-2 btn-primary w-20 text-base mobile:m-0 mobile:mt-2;
     }
   }
 }

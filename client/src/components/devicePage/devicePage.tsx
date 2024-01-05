@@ -101,9 +101,13 @@ const DevicePage = () => {
                         <div className="text-gray-800 font-bold mt-2">Цена: {currentDevice.price}$</div>
                     </div>
                     <div className={styles.main_right}>
-                        <div className="small-font mt-6">Тип: {getTypeOrBrandName(types, currentDevice.typeId)}</div>
+                        <div className="small-font mt-6 mobile:mt-0">
+                            Тип: {getTypeOrBrandName(types, currentDevice.typeId)}
+                        </div>
                         <div
-                            className="small-font mt-4">Брэнд: {getTypeOrBrandName(brands, currentDevice.brandId)}</div>
+                            className="small-font mt-4 mobile:mt-0">
+                            Брэнд: {getTypeOrBrandName(brands, currentDevice.brandId)}
+                        </div>
                         <div className={styles.descriptionBox}>
                             <div className={styles.descriptionBox_title}>{getInfo(currentDevice).title}</div>
                             <div

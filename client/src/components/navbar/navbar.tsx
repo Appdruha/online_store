@@ -4,19 +4,19 @@ import {ADMIN_ROUTE, BASKET_ROUTE, SHOP_ROUTE} from "../../utils/consts";
 import styles from "./navbar.module.scss";
 import {useAppSelector} from "../../hooks/redux-hooks";
 
-const Navbar = () => {
+const Navbar = (props: {menuIsOpen: boolean}) => {
 
     const {role} = useAppSelector(state => state.userReducer)
 
-    const getMenuPartWidth = (userRole) => {
+    const getMenuPartWidth = (userRole: string | undefined) => {
         if (userRole === "ADMIN") {
-            return "w-1/3"
+            return "w-1/3 mobile:w-full"
         }
-        return "w-1/2"
+        return "w-1/2 mobile:w-full"
     }
 
     return (
-        <nav className={styles.menu}>
+        <nav className={`${styles.menu} ${props.menuIsOpen ? "mobile:flex" : "mobile:hidden"}`}>
             <ol>
                 <li className={getMenuPartWidth(role)}><NavLink to={SHOP_ROUTE}>Главная</NavLink></li>
                 <li className={getMenuPartWidth(role)}><NavLink to={BASKET_ROUTE}>Корзина</NavLink></li>

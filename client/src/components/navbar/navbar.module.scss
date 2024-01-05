@@ -1,23 +1,24 @@
 .menu {
-  @apply flex justify-center;
+  @apply flex justify-center mobile:w-full mobile:bg-gray-300 mobile:absolute mobile:z-10;
 
   ol {
-    @apply flex w-full;
+    @apply flex w-full mobile:flex-col;
 
-    :first-child {
-      @apply border-l-0;
+    :first-child li {
+      @apply border-l-0 mobile:border;
     }
 
-    :last-child {
-      @apply border-r-0;
+    :last-child li {
+      @apply border-r-0 mobile:border;
     }
   }
 
   li {
-    @apply flex border-2 border-t-0 border-l-0 border-gray-300 h-10 justify-center items-center;
+    @apply flex border-2 border-t-0 border-l-0 border-gray-300 h-10 justify-center items-center
+    mobile:border-gray-500 mobile:justify-start mobile:border;
 
     a {
-      @apply block w-fit text-base text-gray-600 font-bold;
+      @apply block w-fit text-base text-gray-600 font-bold mobile:pl-2;
     }
   }
 }

@@ -53,11 +53,12 @@ const Shop = () => {
             {isFetching && <Preloader/>}
             <div className={styles.selectBox}>
                 <Select className={styles.select} options={arrayToOptions(brands)} value={selectedBrand}
-                        onChange={brandChangeHandler}/>
+                        onChange={brandChangeHandler} placeholder="Брэнд"/>
                 <Select className={styles.select} options={arrayToOptions(types)} value={selectedType}
-                        onChange={typeChangeHandler}/>
+                        onChange={typeChangeHandler} placeholder="Тип"/>
                 <Select className={styles.select} options={limitOptions}
                         value={limit}
+                        placeholder="Размер страницы"
                         onChange={limitChangeHandler}/>
                 <button disabled={isFetching} className={styles.selectButton} onClick={setNewDevices}>Поиск</button>
             </div>

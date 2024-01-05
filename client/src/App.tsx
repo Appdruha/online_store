@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import styles from "./app.module.scss"
 import RootRouter from "./components/rootRouter";
 import Navbar from "./components/navbar/navbar";
@@ -43,11 +43,13 @@ function App() {
         dispatch(fetchBrandsAndTypes())
     }, []);
 
+    const [menuIsOpen, setMenuIsOpen] = useState(false)
+
     return (
         <div className={styles.appBody}>
-            <Header/>
+            <Header toggleMenuIsOpen={setMenuIsOpen} menuIsOpen={menuIsOpen}/>
             <main className={styles.main}>
-                <Navbar/>
+                <Navbar menuIsOpen={menuIsOpen}/>
                 <RootRouter/>
             </main>
         </div>

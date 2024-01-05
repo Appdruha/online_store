@@ -1,7 +1,20 @@
 .header {
-  @apply flex h-16 w-full bg-gray-300 justify-end;
+  @apply flex justify-end h-16 w-full bg-gray-300 mobile:border mobile:border-gray-500 mobile:justify-between
+  mobile:rounded-b-md;
 
   .button {
-    @apply btn-primary h-9 w-20 text-base place-self-center mr-6;
+    @apply btn-primary h-9 w-20 text-base place-self-center mr-6 float-right;
+  }
+
+  .burgerMenu {
+    @apply hidden border-2 border-l-0 border-r-0 border-gray-500 w-6 h-5 place-self-center mobile:flex
+    ml-4;
+
+    .burgerMenu_notActive {
+      @apply w-full h-1/2 border-b-2 border-gray-500 text-0;
+    }
+    .burgerMenu_active {
+      @apply text-4xl text-gray-500 font-normal w-full h-full flex justify-center items-center pb-2 rotate-45;
+    }
   }
 }

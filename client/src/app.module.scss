@@ -1,5 +1,5 @@
 .appBody {
-    @apply flex m-auto flex-col w-300 min-h-100 h-fit items-center border border-blue-300;
+    @apply flex m-auto flex-col w-300 min-h-100 h-fit items-center border border-blue-300 mobile:w-100;
 
     .main {
         @apply w-full h-full;

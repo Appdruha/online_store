@@ -7,6 +7,9 @@ export default {
         "./src/**/*.{js,ts,jsx,tsx}",
     ],
     theme: {
+        screens: {
+            "mobile": {"max": "460px"}
+        },
         extend: {
             spacing: {
                 "0.75": "3px"
@@ -33,6 +36,9 @@ export default {
             },
             backgroundColor: {
                 modal: "rgba(0,0,0,0.4)"
+            },
+            fontSize: {
+                "0": "0px"
             }
         },
     },

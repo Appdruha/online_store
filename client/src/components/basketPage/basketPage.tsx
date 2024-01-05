@@ -22,7 +22,7 @@ const BasketPage = () => {
     }, [id, currentPage]);
 
     if (!isAuth || error) {
-        return <div className="small-font mt-20">Чтобы просматривать корзину нужно <NavLink
+        return <div className="small-font mt-20 text-center">Чтобы просматривать корзину нужно <NavLink className="text-fuchsia-800"
             to={LOGIN_ROUTE}>авторизироваться</NavLink></div>
     }
 
