@@ -1,5 +1,5 @@
 import React from 'react';
-import {useForm, SubmitHandler} from "react-hook-form"
+import {useForm, SubmitHandler, FieldErrors} from "react-hook-form"
 import {NavLink, useLocation, useNavigate} from "react-router-dom";
 import {LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE} from "../../utils/consts";
 import {authentification} from "../../store/reducers/thunks/userThunks";
@@ -48,13 +48,13 @@ const AuthPage = () => {
         }
     }
 
-    const clearInputErrors = (name: string) => {
+    const clearInputErrors = (name?: keyof Inputs) => {
         dispatch(removeErrors())
         clearErrors(name)
     }
 
-    const isDisabled = (errors) => {
-        return error || errors.email || errors.password || errors.confirmPassword
+    const isDisabled = (errors: FieldErrors) => {
+        return !!(error || errors.email || errors.password || errors.confirmPassword)
     }
 
     return (
@@ -129,12 +129,12 @@ const AuthPage = () => {
 
                     {isLogin ?
                         <div className={styles.chooseFormText}>
-                            Нет аккаунта? <NavLink onClick={clearInputErrors}
+                            Нет аккаунта? <NavLink onClick={() => clearInputErrors()}
                                                    to={REGISTRATION_ROUTE}>Зарегистрируйтесь!</NavLink>
                         </div>
                         :
                         <div className={styles.chooseFormText}>
-                            Есть аккаунт? <NavLink onClick={clearInputErrors} to={LOGIN_ROUTE}>Войдите!</NavLink>
+                            Есть аккаунт? <NavLink onClick={() => clearInputErrors} to={LOGIN_ROUTE}>Войдите!</NavLink>
                         </div>
                     }
                 </form>

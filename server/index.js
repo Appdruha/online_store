@@ -12,7 +12,11 @@ const cookieParser = require('cookie-parser')
 
 const app = express()
 app.use(cors({
-    origin: ["http://localhost:5173"],
+    origin: [
+        "http://localhost:5173",
+        "http://192.168.1.52:5173",
+        "http://172.24.176.1:5173"
+    ],
     credentials: true
 }))
 app.use(express.json())
