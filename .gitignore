@@ -8,6 +8,7 @@
 
 #safety
 /server/.env
+docker-compose.yml
 
 # testing
 /coverage

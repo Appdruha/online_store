@@ -1,5 +1,5 @@
 const ApiError = require('../errors/ApiError')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const {User, Basket} = require('../models/models')
 const jwt = require('jsonwebtoken')
 const cookie = require('cookie')
