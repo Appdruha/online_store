@@ -27,6 +27,8 @@ services:
     restart: always
   client:
     build: ./client
+    networks:
+      nginx_net:
     ports:
       - "80:80"
       - "443:443"
@@ -34,5 +36,11 @@ services:
   certbot:
     container_name: certbot
     image: certbot/certbot
+    networks:
+      nginx_net:
     restart: unless-stopped
+networks:
+  nginx_net:
+    enable_ipv6: true
+
 
