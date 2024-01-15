@@ -13,12 +13,12 @@ const cookieParser = require('cookie-parser')
 const app = express()
 app.use(cors({
     origin: [
-        "http://localhost:80",
-        "http://192.168.1.52:80",
-        "http://172.24.176.1:80",
         "http://localhost",
         "http://localhost/",
-        "http://localhost:80/"
+        "http://localhost:80/",
+        "http://5.35.93.59",
+        "https://appdruha-apps.ru",
+        "https://appdruha-apps.ru/",
     ],
     credentials: true
 }))

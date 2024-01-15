@@ -1,0 +1,35 @@
+version: "3"
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: "online_store"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "AndreYPasswoRd"
+    ports:
+      - "5432:5432"
+    container_name: db
+  server:
+    build: ./server
+    environment:
+      - DB_HOST=db
+      - DB_USER=postgres
+      - DB_PASSWORD=AndreYPasswoRd
+      - DB_NAME=online_store
+      - DB_PORT=5432
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    container_name: app-api
+    stdin_open: true
+    tty: true
+    restart: always
+  client:
+    build: ./client
+    ports:
+      - "80:80"
+      - "443:443"
+    container_name: app-client
+
+
