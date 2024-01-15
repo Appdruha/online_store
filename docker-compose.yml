@@ -31,14 +31,7 @@ services:
       - "80:80"
       - "443:443"
     container_name: app-client
-  certbot:
-    container_name: certbot
-    image: certbot/certbot
-    restart: unless-stopped
-    volumes:
-      - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
-    command: certonly --webroot -w /var/www/certbot --force-renewal --email {email} -d {domain} --agree-tos
+
 
 
 
