@@ -31,5 +31,8 @@ services:
       - "80:80"
       - "443:443"
     container_name: app-client
-
+  certbot:
+    container_name: certbot
+    image: certbot/certbot
+    restart: unless-stopped
 
