@@ -41,6 +41,5 @@ services:
     restart: unless-stopped
 networks:
   nginx_net:
-    enable_ipv6: true
 
 
