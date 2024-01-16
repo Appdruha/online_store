@@ -26,7 +26,7 @@ services:
     tty: true
     restart: always
   client:
-    build: ./client
+    image: nginx:latest
     ports:
       - "80:80"
       - "443:443"
@@ -36,7 +36,6 @@ services:
       - ./certbot/default.conf:/etc/conf.d/ssl
       - ./certbot/data:/var/www/certbot
     restart: always
-    container_name: app-client
   certbot:
     image: certbot/certbot:latest
     command: certonly --webroot --webroot-path=/var/www/certbot --email andreyka.kameshkov337@mail.ru --agree-tos --no-eff-email -d appdruha-apps.ru -d www.appdruha-apps.ru
