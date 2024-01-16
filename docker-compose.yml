@@ -1,4 +1,4 @@
-version: "3"
+version: "3.8"
 services:
   db:
     image: postgres
@@ -31,15 +31,19 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx/conf/:/etc/nginx/conf.d/:ro
-      - ./certbot/www:/var/www/certbot/:ro
+      - ./public:/var/www/html
+      - ./default.conf.d:/etc/conf.d/default.conf.d
+      - ./certbot/default.conf:/etc/conf.d/ssl
+      - ./certbot/data:/var/www/certbot
     restart: always
     container_name: app-client
   certbot:
     image: certbot/certbot:latest
+    command: certonly --webroot --webroot-path=/var/www/certbot --email andreyka.kameshkov337@mail.ru --agree-tos --no-eff-email -d appdruha-apps.ru -d www.appdruha-apps.ru
     volumes:
-      - ./certbot/www/:/var/www/certbot/:rw
-      - ./certbot/conf/:/etc/letsencrypt/:rw
+      - ./certbot/default.conf:/etc/letsencrypt
+      - ./certbot/logs:/var/log/letsencrypt
+      - ./certbot/data:/var/www/certbot
 
 
 
