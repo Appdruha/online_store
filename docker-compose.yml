@@ -31,7 +31,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./public:/var/www/html
+      - ./usr/share/nginx/html:/var/www/html
       - ./default.conf.d:/etc/conf.d/default.conf.d
       - ./certbot/default.conf:/etc/conf.d/ssl
       - ./certbot/data:/var/www/certbot
