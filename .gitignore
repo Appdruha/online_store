@@ -7,8 +7,8 @@
 .pnp.js
 
 #safety
-#/server/.env
-#docker-compose.yml
+/server/.env
+
 
 # testing
 /coverage
@@ -18,7 +18,7 @@
 
 # misc
 .DS_Store
-#.env.local
+.env.local
 .env.development.local
 .env.test.local
 .env.production.local
@@ -28,7 +28,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # static
-#/server/static
+/server/static
 
 # Logs
 logs
